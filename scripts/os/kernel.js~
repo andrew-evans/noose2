@@ -93,15 +93,6 @@ function krnOnCPUClockPulse()
     {
        krnTrace("Idle");
     }
-
-	// Update the status bar!
-	var date = new Date();
-
-	_StatusBar.getContext('2d').clearRect(0,0,_StatusBar.width,_StatusBar.height);
-	_StatusBar.getContext('2d').fillStyle = '#FFFFFF';
-	_StatusBar.getContext('2d').font = "bold 24px Courier";
-	_StatusBar.getContext('2d').fillText(date.toLocaleDateString() + ", " + date.toLocaleTimeString(), 5, 22);
-	_StatusBar.getContext('2d').fillText("Status: " + _Status, 500, 22);
 }
 
 

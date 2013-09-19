@@ -55,11 +55,7 @@ function CLIconsole() {
 				// ... and reset our buffer.
 				this.buffer = "";
            	}
-			else if (chr == String.fromCharCode(20))		//Caps Lock
-			{
-				krnKeyboardDriver.capsLock = !krnKeyboardDriver.capsLock;
-			}
-			else if (chr == String.fromCharCode(17))		//Up arrow
+			else if (chr == String.fromCharCode(21))		//Up arrow
 			{
 				if (this.commandIndex >= 0)
 				{
@@ -70,7 +66,7 @@ function CLIconsole() {
 					this.putText(this.buffer);
 				}
 			}
-			else if (chr == String.fromCharCode(18))		//Down arrow
+			else if (chr == String.fromCharCode(22))		//Down arrow
 			{
 				if (this.commandIndex < this.commandHistory.length)
 				{

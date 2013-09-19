@@ -41,7 +41,7 @@ function shellInit() {
 	// load
     sc = new ShellCommand();
     sc.command = "load";
-    sc.description = "- Loads a program from the program input.";
+    sc.description = "- Loads a program";
     sc.function = shellLoad;
     this.commandList[this.commandList.length] = sc;
 
