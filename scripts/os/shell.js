@@ -351,10 +351,17 @@ function shellLoad(args)
 	krnTrace(_ProgramInput.value);
 	var programValid = pattern.test(_ProgramInput.value);
 	
-	//For now, just display the validity.
+	//Call the memory manager to load the program into location #0000
 	if (programValid)
 	{
-		_StdIn.putText("Program input is valid.");
+		if (_MemoryManager.loadProgram(_ProgramInput.value, 0x0000))
+		{
+			_StdIn.putText("Program successfully loaded.");
+		}
+		else
+		{
+			_StdIn.putText("Program did not load successfully.");
+		}
 	}
 	else
 	{
