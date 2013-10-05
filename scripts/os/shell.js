@@ -354,9 +354,10 @@ function shellLoad(args)
 	//Call the memory manager to load the program into location #0000
 	if (programValid)
 	{
-		if (_MemoryManager.loadProgram(_ProgramInput.value, 0x0000))
+		var pid = _MemoryManager.loadProgram(_ProgramInput.value, 0x0000);
+		if (pid != -1)
 		{
-			_StdIn.putText("Program successfully loaded.");
+			_StdIn.putText("Program successfully loaded with PID " + pid);
 		}
 		else
 		{

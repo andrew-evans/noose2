@@ -25,6 +25,7 @@ function hostInit()
 	_Canvas  = document.getElementById('display');
 	_StatusBar = document.getElementById('status');
 	_ProgramInput = document.getElementById('taProgramInput');
+	_MemoryDisplay = document.getElementById('taMem');
 
 	// Get a global reference to the drawing context.
 	_DrawingContext = _Canvas.getContext('2d');
@@ -93,6 +94,9 @@ function hostBtnStartOS_click(btn)
 
 	_MemoryManager = new MemoryManager();
 	_MemoryManager.init();
+
+	_PCB = new PCB();
+	_PCB.init();
 
     // ... then set the host clock pulse ...
     _hardwareClockID = setInterval(hostClockPulse, CPU_CLOCK_INTERVAL);

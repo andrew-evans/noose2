@@ -16,17 +16,20 @@ function MemoryManager() {
 		var currentLocation = location;
 		var opCodes = programString.split(" ");
 		var i = 0;
+		var pid = 0;
 
 		while (i < opCodes.length) {
 			if (i >= this.memoryLimit) {
-				return false;
+				return -1;
 			}
 			
 			_Memory.load(opCodes[i++], currentLocation++);
-			krnTrace("did a thing");
 		}
+
+		pid = _PCB.addProcess(location);
+		//_StdIn.putText("Added process with pid " + pid);
 		
-		return true;
+		return pid;
 	};
 
 };

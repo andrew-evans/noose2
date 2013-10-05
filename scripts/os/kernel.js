@@ -101,7 +101,7 @@ function krnOnCPUClockPulse()
 	_StatusBar.getContext('2d').fillStyle = '#FFFFFF';
 	_StatusBar.getContext('2d').font = "bold 24px Courier";
 	_StatusBar.getContext('2d').fillText(date.toLocaleDateString() + ", " + date.toLocaleTimeString(), 5, 22);
-	_StatusBar.getContext('2d').fillText("Status: " + _Status, 500, 22);
+	_StatusBar.getContext('2d').fillText("Status: " + _Status, 1000, 22);
 }
 
 
