@@ -2,24 +2,22 @@
 
 	Process Control Block
 
-	stores process information in a queue in the following format:
-
-		[pid, location]
+	stores process information
 
 */
 
 function PCB() {
 
-	this.processQueue = new Queue();
-	this.pid = 0;
+	this.pid = -1;
+	this.location = -1;
+	this.locationEnd = -1;
+	this.len = -1;
 
-	this.init = function() {
-		this.pid = 0;
-	};
-
-	this.addProcess = function(location) {
-		this.processQueue.enqueue([this.pid,location]);
-		return this.pid++;
+	this.init = function(pid, location, len) {
+		this.pid = pid;
+		this.location = location;
+		this.len = len;
+		this.locationEnd = location + len - 1;
 	};
 
 };

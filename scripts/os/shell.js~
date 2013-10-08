@@ -45,6 +45,13 @@ function shellInit() {
     sc.function = shellLoad;
     this.commandList[this.commandList.length] = sc;
 
+	// run
+    sc = new ShellCommand();
+    sc.command = "run";
+    sc.description = "- Runs a program from memory.";
+    sc.function = shellRun;
+    this.commandList[this.commandList.length] = sc;
+
     // date
     sc = new ShellCommand();
     sc.command = "date";
@@ -341,7 +348,7 @@ function shellNoose(args)
 
 function shellVer(args)
 {
-    _StdIn.putText(APP_NAME + " version " + APP_VERSION);    
+    _StdIn.putText(APP_NAME + " version: " + APP_VERSION);    
 }
 
 function shellLoad(args)
@@ -354,9 +361,10 @@ function shellLoad(args)
 	//Call the memory manager to load the program into location #0000
 	if (programValid)
 	{
-		if (_MemoryManager.loadProgram(_ProgramInput.value, 0x0000))
+		var pid = _MemoryManager.loadProgram(_ProgramInput.value, 0x0000);
+		if (pid != -1)
 		{
-			_StdIn.putText("Program successfully loaded.");
+			_StdIn.putText("Program successfully loaded with PID " + pid);
 		}
 		else
 		{
@@ -366,6 +374,22 @@ function shellLoad(args)
 	else
 	{
 		_StdIn.putText("Program input is invalid!");
+	}
+}
+
+function shellRun(args)
+{
+	if (args.length > 0) {
+		var process = _MemoryManager.getProcess(parseInt(args[0]));
+		if (process !== null) {
+			_StdIn.putText("Found program PID " + process.pid + " at location " + process.location);
+		}
+		else {
+			_StdIn.putText("No program with PID " + args[0] + " exists in memory.");
+		}
+	}
+	else {
+		_StdIn.putText("Please supply a PID as an argument.");
 	}
 }
 

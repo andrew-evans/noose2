@@ -95,9 +95,6 @@ function hostBtnStartOS_click(btn)
 	_MemoryManager = new MemoryManager();
 	_MemoryManager.init();
 
-	_PCB = new PCB();
-	_PCB.init();
-
     // ... then set the host clock pulse ...
     _hardwareClockID = setInterval(hostClockPulse, CPU_CLOCK_INTERVAL);
     // .. and call the OS Kernel Bootstrap routine.
@@ -108,6 +105,7 @@ function hostBtnHaltOS_click(btn)
 {
     hostLog("emergency halt", "host");
     hostLog("Attempting Kernel shutdown.", "host");
+
     // Call the OS shutdown routine.
     krnShutdown();
     // Stop the JavaScript interval that's simulating our clock pulse.

@@ -2,7 +2,7 @@
 
 	Process Control Block
 
-	stores process information in a queue in the following format:
+	stores process information in a 2d array in the following format:
 
 		[pid, location]
 
@@ -10,7 +10,7 @@
 
 function PCB() {
 
-	this.processQueue = new Queue();
+	this.processes = [];
 	this.pid = 0;
 
 	this.init = function() {
@@ -18,8 +18,18 @@ function PCB() {
 	};
 
 	this.addProcess = function(location) {
-		this.processQueue.enqueue([pid,location]);
-		return pid++;
+		this.processes.push([this.pid,location]);
+		return this.pid++;
+	};
+
+	this.getProcess = function(p) {
+		for (var i = 0; i < this.processes.length; i++) {
+			if (this.processes[i][0] == p) {
+				return this.processes[i];
+			}
+		}
+		
+		return -1;
 	};
 
 };

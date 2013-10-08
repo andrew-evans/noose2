@@ -7,6 +7,8 @@
 function MemoryManager() {
 
 	this.memoryLimit = _Memory.memoryLimit;
+	this.processes = [];
+	this.pid = 0;
 
 	this.init = function() {
 		
@@ -16,20 +18,32 @@ function MemoryManager() {
 		var currentLocation = location;
 		var opCodes = programString.split(" ");
 		var i = 0;
-		var pid = 0;
 
 		while (i < opCodes.length) {
 			if (i >= this.memoryLimit) {
-				return false;
+				return -1;
 			}
 			
-			_Memory.load(opCodes[i++], currentLocation++);
+			_Memory.load(parseInt(opCodes[i++],16), currentLocation++);
 		}
 
-		pid = _PCB.addProcess(location);
-		//_StdIn.putText("Added process with pid " + pid);
+		//create a new PCB and pass in the necessary values
+		var pcb = new PCB();
+		pcb.init(this.pid, location, opCodes.length);
+		this.processes.push(pcb);
+		this.pid++;
+
+		return pcb;
+	};
+
+	this.getProcess = function(p) {
+		for (var i = 0; i < this.processes.length; i++) {
+			if (this.processes[i].pid == p) {
+				return this.processes[i];
+			}
+		}
 		
-		return pid;
+		return null;
 	};
 
 };

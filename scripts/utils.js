@@ -17,6 +17,13 @@ function trim(str) {     // Use a regular expression to remove leading and trail
 	
 }
 
+function zeroPad(str, length) {
+	while (str.length < length) {
+		str = "0" + str;
+	}
+	return str;
+}
+
 function rot13(str) {   // An easy-to understand implementation of the famous and common Rot13 obfuscator.
                         // You can do this in three lines with a complex regular expression, but I'd have
     var retVal = "";    // trouble explaining it in the future.  There's a lot to be said for obvious code.

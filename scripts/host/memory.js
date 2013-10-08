@@ -11,7 +11,7 @@ function Memory() {
 	this.init = function() {
 		this.mem = [];
 		for (var i = 0; i < this.memoryLimit; i++) {
-			this.mem[i] = -1;
+			this.mem[i] = 0;
 		}
 	};
 

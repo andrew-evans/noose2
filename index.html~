@@ -15,6 +15,7 @@
    <script type="text/javascript" src="scripts/host/control.js"></script>
    <script type="text/javascript" src="scripts/host/devices.js"></script>
    <script type="text/javascript" src="scripts/host/cpu.js"></script>
+   <script type="text/javascript" src="scripts/host/memory.js"></script>
 
    <!-- Virtual OS Routines: Make sure Kernel code is last, since it needs those above it. -->
    <script type="text/javascript" src="scripts/os/interrupt.js"></script>
@@ -25,6 +26,8 @@
    <script type="text/javascript" src="scripts/os/queue.js"></script>
    <script type="text/javascript" src="scripts/os/shell.js"></script>
    <script type="text/javascript" src="scripts/os/kernel.js"></script>
+   <script type="text/javascript" src="scripts/os/memoryManager.js"></script>
+   <script type="text/javascript" src="scripts/os/pcb.js"></script>
 
    <!-- Other Routines -->
    <script type="text/javascript" src="scripts/utils.js"></script>
@@ -63,44 +66,74 @@
              onclick="hostBtnReset_click(this);">
    </div>
 
-   <div id="divStatus" style="margin:4px; width:900px; height:30px; background-color: black">
+   <div id="divStatus" style="margin:4px; width:1400px; height:30px; background-color: black">
       <canvas id="status"
-              width="900px"
-              height="25px">
+              width="1400px"
+              height="30px">
       </canvas>
    </div>
 
-   <div id="divConsole" style="margin:4px; width:500px; height:500px; float:left;">
-      <canvas id="display"
-              width="500px"
-              height="500px"
-              tabindex="3">
-      </canvas>
-   </div>
+   <table>
+   <tr style="vertical-align:top;">
 
-   <div id="divLog" style="margin-left:520px;">
-      <label>
-         Log
-         <br>
-         <textarea name="taLog"
-                   id  ="taLog"
-                   rows="26"
-                   cols="48"
-         ></textarea>
-      </label>
-   </div>
+	<td style="padding:10px">
+	   <div id="divMem">
+		  <label>
+		     Memory
+		 <br>
+		     <textarea name="taMem"
+		               id  ="taMem"
+		               rows="26"
+		               cols="48"
+		     ></textarea>
+		  </label>
+	   </div>
+	</td>
 
-   <div id="divUserProgramInput" style="margin-left:520px;">
-      <label>
-         User Program Input
-         <br>
-         <textarea name="taProgramInput"
-                   id  ="taProgramInput"
-                   rows="8"
-                   cols="48"
-         ></textarea>
-      </label>
-   </div>
+	<td style="padding:10px">
+	   <div id="divConsole">
+		  <label>
+			Console
+		  <br>
+		  <canvas id="display"
+		          width="500px"
+		          height="500px"
+		          tabindex="3"
+					background-color="black"
+					fill-color="green">
+		  </canvas>
+		 </label>
+	   </div>
+	</td>
+
+	<td style="padding:10px">
+	   <div id="divLog">
+		  <label>
+		     Log
+		     <br>
+		     <textarea name="taLog"
+		               id  ="taLog"
+		               rows="26"
+		               cols="48"
+		     ></textarea>
+		  </label>
+	   </div>
+
+	   <div id="divUserProgramInput">
+		  <label>
+		     User Program Input
+		     <br>
+		     <textarea name="taProgramInput"
+		               id  ="taProgramInput"
+		               rows="8"
+		               cols="48"
+		     ></textarea>
+		  </label>
+	   </div>
+	</td>
+
+   </tr>
+   </table>
 
 </div>
 

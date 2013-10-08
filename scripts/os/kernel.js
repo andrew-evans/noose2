@@ -102,6 +102,16 @@ function krnOnCPUClockPulse()
 	_StatusBar.getContext('2d').font = "bold 24px Courier";
 	_StatusBar.getContext('2d').fillText(date.toLocaleDateString() + ", " + date.toLocaleTimeString(), 5, 22);
 	_StatusBar.getContext('2d').fillText("Status: " + _Status, 1000, 22);
+
+	// Update the memory table view
+	var memoryString = "";
+	for (var i = 0; i < _Memory.memoryLimit; i++) {
+		memoryString += zeroPad(i.toString(16),2) + "\t\t"
+				+ zeroPad(_Memory.mem[i].toString(16), 2) + "\n";
+	}
+
+	_MemoryDisplay.value = memoryString;
+
 }
 
 

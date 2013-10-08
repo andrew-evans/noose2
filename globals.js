@@ -12,7 +12,7 @@
 // Global CONSTANTS
 //
 var APP_NAME = "noOSe";
-var APP_VERSION = "0.0";
+var APP_VERSION = "business cat";
 
 var CPU_CLOCK_INTERVAL = 100;   // This is in ms, or milliseconds, so 1000 = 1 second.
 
@@ -25,6 +25,8 @@ var KEYBOARD_IRQ = 1;
 // Global Variables
 //
 var _CPU = null;
+var _Memory = null;
+var _MemoryManager = null;
 
 var _OSclock = 0;       // Page 23.
 
@@ -43,6 +45,7 @@ var _StatusBar = null;		  //Initialized in hostInit().
 var _Status = "OK";		  //Current status of the OS
 
 var _ProgramInput = null;	  //Initialized in hostInit().
+var _MemoryDisplay = null;        //Initialized in hostInit().
 
 // Default the OS trace to be on.
 var _Trace = true;

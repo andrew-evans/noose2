@@ -13,9 +13,9 @@ function Memory() {
 		for (var i = 0; i < this.memoryLimit; i++) {
 			this.mem[i] = -1;
 		}
-	}
+	};
 
 	this.load = function(data, location) {
 		this.mem[location] = data;
-	}
-}
+	};
+};
