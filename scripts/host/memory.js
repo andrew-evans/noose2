@@ -7,6 +7,8 @@
 function Memory() {
 
 	this.memoryLimit = 256;
+	this.wordSize = 256;
+	this.mem = [];
 
 	this.init = function() {
 		this.mem = [];
@@ -16,6 +18,12 @@ function Memory() {
 	};
 
 	this.load = function(data, location) {
-		this.mem[location] = data;
+		//If we do things properly elsewhere (program validation, etc) we
+		//should only get values lower than the word size. But just in case,
+		//we mod the number by the word size before storing it.
+
+		//Javascript does not properly compute mod for negatives, so I've
+		//substituted my own function.
+		this.mem[location] = modulo(data,this.wordSize);
 	};
 };

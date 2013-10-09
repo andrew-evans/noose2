@@ -94,22 +94,35 @@ function krnOnCPUClockPulse()
        krnTrace("Idle");
     }
 
-	// Update the status bar!
+	// Update the status bar
 	var date = new Date();
 
 	_StatusBar.getContext('2d').clearRect(0,0,_StatusBar.width,_StatusBar.height);
 	_StatusBar.getContext('2d').fillStyle = '#FFFFFF';
-	_StatusBar.getContext('2d').font = "bold 24px Courier";
+	_StatusBar.getContext('2d').font = "bold 24px Courier New";
 	_StatusBar.getContext('2d').fillText(date.toLocaleDateString() + ", " + date.toLocaleTimeString(), 5, 22);
 	_StatusBar.getContext('2d').fillText("Status: " + _Status, 1000, 22);
 
 	// Update the memory table view
 	var memoryString = "";
 	for (var i = 0; i < _Memory.memoryLimit; i++) {
-		memoryString += i.toString(16) + "\t\t" + _Memory.mem[i].toString(16) + "\n";
+		memoryString += zeroPad(i.toString(16), 2) + "\t" +
+				zeroPad(_Memory.mem[i].toString(16), 2) + "\t" +
+				zeroPad(_Memory.mem[i].toString(2), 8) + "\n";
 	}
 
 	_MemoryDisplay.value = memoryString;
+
+	//Update the CPU table view
+	var CPUString = "";
+	//This is probably bad programming, but it's easy to read.
+	CPUString += "PC    \t-\t" + _CPU.PC + "\n";
+	CPUString += "Acc   \t-\t" + _CPU.Acc + "\n";
+	CPUString += "X Reg \t-\t" + _CPU.Xreg + "\n";
+	CPUString += "Y Reg \t-\t" + _CPU.Yreg + "\n";
+	CPUString += "Z Flag\t-\t" + _CPU.Zflag + "\n";
+
+	_CPUDisplay.value = CPUString;
 
 }
 

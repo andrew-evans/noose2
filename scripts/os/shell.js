@@ -126,7 +126,7 @@ function shellInit() {
     // bsod
     sc = new ShellCommand();
     sc.command = "bsod";
-    sc.description = "<string> - Deaths the screen with blue.";
+    sc.description = "- Deaths the screen with blue.";
     sc.function = shellBSOD;
     this.commandList[this.commandList.length] = sc;
 
@@ -348,7 +348,9 @@ function shellNoose(args)
 
 function shellVer(args)
 {
-    _StdIn.putText(APP_NAME + " version: " + APP_VERSION);    
+	_StdIn.putText(APP_DESCRIPTION);
+	_StdIn.advanceLine();
+    _StdIn.putText(APP_NAME + " version " + APP_VERSION);
 }
 
 function shellLoad(args)
@@ -527,7 +529,7 @@ function shellBSOD(args)
 	_DrawingContext.fillRect(0,0, _Canvas.width, _Canvas.height);
 	_DrawingContext.fillStyle = "white";
   	_DrawingContext.font = "bold 32px Wingdings";
-  	_DrawingContext.fillText("fug u fuggen broke it.", 50, 200);
+  	_DrawingContext.fillText("fug, u fuggen broke it.", 50, _Canvas.height / 2);
 	krnShutdown();
 	clearInterval(_hardwareClockID);
 }

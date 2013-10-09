@@ -105,7 +105,6 @@ function hostBtnHaltOS_click(btn)
 {
     hostLog("emergency halt", "host");
     hostLog("Attempting Kernel shutdown.", "host");
-	_Status = "HALTED";
 
     // Call the OS shutdown routine.
     krnShutdown();

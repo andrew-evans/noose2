@@ -24,6 +24,16 @@ function zeroPad(str, length) {
 	return str;
 }
 
+//Needlessly recursive modulo function that handles negative values of a
+function modulo(a, b) {
+	if (a >= 0) {
+		return a % b;
+	}
+	else {
+		return modulo(a + b, b);
+	}
+}
+
 function rot13(str) {   // An easy-to understand implementation of the famous and common Rot13 obfuscator.
                         // You can do this in three lines with a complex regular expression, but I'd have
     var retVal = "";    // trouble explaining it in the future.  There's a lot to be said for obvious code.

@@ -2,8 +2,8 @@
 <html>
 <head>
    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
-   <meta name="author"             content="Alan G. Labouseur" />
-   <link rel="stylesheet" href="alanbbos.css" type="text/css" media="screen" />
+   <meta name="author"             content="Andrew Evans, Alan Labouseur" />
+   <link rel="stylesheet" href="noose.css" type="text/css" media="screen" />
    <title>
       noOSe - Notably Optimistic Operating System for Enjoyment
    </title>
@@ -76,15 +76,31 @@
    <table>
    <tr style="vertical-align:top;">
 
-	<td style="padding:10px">
+	<td style="padding:16px">
 	   <div id="divMem">
 		  <label>
 		     Memory
 		 <br>
 		     <textarea name="taMem"
 		               id  ="taMem"
-		               rows="26"
+		               rows="28"
 		               cols="48"
+					   readonly=true
+					   disabled=true
+		     ></textarea>
+		  </label>
+	   </div>
+	   
+	   <div id="divCPU">
+		  <label>
+		     CPU
+		     <br>
+		     <textarea name="taCPU"
+		               id  ="taCPU"
+		               rows="8"
+		               cols="48"
+					   readonly=true
+					   disabled=true
 		     ></textarea>
 		  </label>
 	   </div>
@@ -97,7 +113,7 @@
 		  <br>
 		  <canvas id="display"
 		          width="500px"
-		          height="500px"
+		          height="600px"
 		          tabindex="3">
 		  </canvas>
 		 </label>
@@ -111,8 +127,10 @@
 		     <br>
 		     <textarea name="taLog"
 		               id  ="taLog"
-		               rows="26"
+		               rows="28"
 		               cols="48"
+					   readonly=true
+					   disabled=true
 		     ></textarea>
 		  </label>
 	   </div>

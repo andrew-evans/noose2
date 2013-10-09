@@ -21,7 +21,7 @@ function MemoryManager() {
 
 		while (i < opCodes.length) {
 			if (i >= this.memoryLimit) {
-				return -1;
+				return null;
 			}
 			
 			_Memory.load(parseInt(opCodes[i++],16), currentLocation++);
@@ -45,5 +45,9 @@ function MemoryManager() {
 		
 		return null;
 	};
+
+	this.readValue = function(location) {
+		return _Memory.mem[location];
+	}
 
 };
