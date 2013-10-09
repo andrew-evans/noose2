@@ -26,22 +26,38 @@ function Cpu() {
         this.Acc   = 0;
         this.Xreg  = 0;
         this.Yreg  = 0;
-        this.Zflag = 0;      
-        this.isExecuting = false;  
+        this.Zflag = 0;
+        this.isExecuting = false;
     };
+
+	//sort of unnecessary, but it feels a little cleaner this way.
+	this.run = function() {
+		this.isExecuting = true;
+	};
     
     this.cycle = function() {
         krnTrace("CPU cycle");
         // TODO: Accumulate CPU usage and profiling statistics here.
         // Do the real work here. Be sure to set this.isExecuting appropriately.
 
-		this.isExecuting = true;
-		var instr = 0;
-
-		instr = fetch(this.PC);
+		//fetch the next instruction
+		var instr = this.fetch();
+		//execute the instruction
+		this.execute(instr);
     };
 
-	this.fetch = function(location) {
-		return _MemoryManager.readValue(location);
+	//fetches the current byte in memory and increments the PC
+	this.fetch = function() {
+		return _MemoryManager.readValue(this.PC++);
+	};
+
+	this.execute = function(instr) {
+		switch (instr) {
+			//LDA
+			//fetch the next byte and load it into the acc
+			case (0xA9):
+				this.Acc = this.fetch();
+				break;
+		}
 	};
 }

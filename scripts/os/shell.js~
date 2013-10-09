@@ -203,10 +203,12 @@ function shellParseInput(buffer)
     buffer = trim(buffer);
 
     // 2. Lower-case it.
-    buffer = buffer.toLowerCase();
+    //buffer = buffer.toLowerCase();
 
     // 3. Separate on spaces so we can determine the command and command-line args, if any.
     var tempList = buffer.split(" ");
+	//lower-case the command, but not the arguments.
+	tempList[0] = tempList[0].toLowerCase();
 
     // 4. Take the first (zeroth) element and use that as the command.
     var cmd = tempList.shift();  // Yes, you can do that to an array in JavaScript.  See the Queue class.
@@ -350,7 +352,7 @@ function shellVer(args)
 {
 	_StdIn.putText(APP_DESCRIPTION);
 	_StdIn.advanceLine();
-    _StdIn.putText(APP_NAME + " version: " + APP_VERSION);
+    _StdIn.putText(APP_NAME + " version " + APP_VERSION);
 }
 
 function shellLoad(args)
@@ -385,6 +387,7 @@ function shellRun(args)
 		var process = _MemoryManager.getProcess(parseInt(args[0]));
 		if (process !== null) {
 			_StdIn.putText("Found program PID " + process.pid + " at location " + process.location);
+			_CPU.run();
 		}
 		else {
 			_StdIn.putText("No program with PID " + args[0] + " exists in memory.");

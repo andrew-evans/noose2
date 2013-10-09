@@ -202,16 +202,13 @@ function shellParseInput(buffer)
     // 1. Remove leading and trailing spaces.
     buffer = trim(buffer);
 
-    // 2. Lower-case it.
-    buffer = buffer.toLowerCase();
-
     // 3. Separate on spaces so we can determine the command and command-line args, if any.
     var tempList = buffer.split(" ");
 
     // 4. Take the first (zeroth) element and use that as the command.
     var cmd = tempList.shift();  // Yes, you can do that to an array in JavaScript.  See the Queue class.
-    // 4.1 Remove any left-over spaces.
-    cmd = trim(cmd);
+    // 4.1 Remove any left-over spaces and lower-case the command
+    cmd = trim(cmd).toLowerCase();;
     // 4.2 Record it in the return value.
     retVal.command = cmd;
 
@@ -385,6 +382,7 @@ function shellRun(args)
 		var process = _MemoryManager.getProcess(parseInt(args[0]));
 		if (process !== null) {
 			_StdIn.putText("Found program PID " + process.pid + " at location " + process.location);
+			_CPU.run();
 		}
 		else {
 			_StdIn.putText("No program with PID " + args[0] + " exists in memory.");
