@@ -87,6 +87,7 @@
 		               cols="48"
 					   readonly=true
 					   disabled=true
+					   background-color=black
 		     ></textarea>
 		  </label>
 	   </div>
@@ -99,7 +100,8 @@
 		               id  ="taCPU"
 		               rows="8"
 		               cols="48"
-					   font-family="monospace"
+					   readonly=true
+					   disabled=true
 		     ></textarea>
 		  </label>
 	   </div>
@@ -128,6 +130,8 @@
 		               id  ="taLog"
 		               rows="28"
 		               cols="48"
+					   readonly=true
+					   disabled=true
 		     ></textarea>
 		  </label>
 	   </div>
@@ -140,7 +144,6 @@
 		               id  ="taProgramInput"
 		               rows="8"
 		               cols="48"
-					   font-family="monospace"
 		     ></textarea>
 		  </label>
 	   </div>

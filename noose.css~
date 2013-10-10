@@ -3,7 +3,7 @@
 body {
    background: #909193 url(images/business-cat.jpg) repeat;
 	color: white;
-   font-family: Courier New, sans-serif;
+   font-family: Trebuchet, sans-serif;
 	font-size: 14pt;
 	font-weight: bold;
 	font-style: normal;
@@ -38,6 +38,7 @@ h3 {
 }
 
 #taMem {
+	background-color: blue;
 	color: white;
 	font-family: Courier New, serif, monospace;
 	font-size: 10pt;
