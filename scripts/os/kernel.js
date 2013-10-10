@@ -104,11 +104,14 @@ function krnOnCPUClockPulse()
 	_StatusBar.getContext('2d').fillText("Status: " + _Status, 1000, 22);
 
 	// Update the memory table view
-	var memoryString = "";
+	var memoryString = " ADD  |  HEX   |    BINARY    |   DEC   | ASCII\n" +
+					   "-----------------------------------------------\n";
 	for (var i = 0; i < _Memory.memoryLimit; i++) {
-		memoryString += zeroPad(i.toString(16), 2) + "\t|\t" +
-				zeroPad(_Memory.mem[i].toString(16), 2) + "\t|\t" +
-				zeroPad(_Memory.mem[i].toString(2), 8) + "\n";
+		memoryString += "  " + zeroPad(i.toString(16), 2) + "  |   " +
+				zeroPad(_Memory.mem[i].toString(16), 2) + "   |   " +
+				zeroPad(_Memory.mem[i].toString(2), 8) + "   |   " +  
+				zeroPad(_Memory.mem[i].toString(10), 3) + "   |   " +
+				String.fromCharCode(_Memory.mem[i]) + "\n";
 	}
 
 	_MemoryDisplay.value = memoryString;

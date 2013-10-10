@@ -2,34 +2,39 @@
 
 	Process Control Block
 
-	stores process information in a 2d array in the following format:
-
-		[pid, location]
+	stores process information
 
 */
 
 function PCB() {
 
-	this.processes = [];
-	this.pid = 0;
+	this.pid = -1;
+	this.location = -1;
+	this.locationEnd = -1;
+	this.len = -1;
 
-	this.init = function() {
-		this.pid = 0;
+	this.resetCPU();
+
+	this.init = function(pid, location, len) {
+		this.pid = pid;
+		this.location = location;
+		this.len = len;
+		this.locationEnd = location + len - 1;
 	};
 
-	this.addProcess = function(location) {
-		this.processes.push([this.pid,location]);
-		return this.pid++;
+	this.saveCPU = function() {
+		this.PC = _CPU.PC;
+		this.Acc = _CPU.Acc;
+		this.Xreg = _CPU.Xreg;
+		this.Yreg = _CPU.Yreg;
+		this.Zflag = _CPU.Zflag;
 	};
 
-	this.getProcess = function(p) {
-		for (var i = 0; i < this.processes.length; i++) {
-			if (this.processes[i][0] == p) {
-				return this.processes[i];
-			}
-		}
-		
-		return -1;
+	this.resetCPU = function() {
+		this.PC    = 0;     // Program Counter
+		this.Acc   = 0;     // Accumulator
+		this.Xreg  = 0;     // X register
+		this.Yreg  = 0;     // Y register
+		this.Zflag = 0;     // Z-ero flag (Think of it as "isZero"
 	};
-
 };

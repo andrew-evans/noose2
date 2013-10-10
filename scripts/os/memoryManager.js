@@ -24,7 +24,7 @@ function MemoryManager() {
 				return null;
 			}
 			
-			_Memory.load(parseInt(opCodes[i++],16), currentLocation++);
+			this.writeValue(parseInt(opCodes[i++],16), currentLocation++);
 		}
 
 		//create a new PCB and pass in the necessary values
@@ -48,6 +48,10 @@ function MemoryManager() {
 
 	this.readValue = function(location) {
 		return _Memory.mem[location];
-	}
+	};
+
+	this.writeValue = function(value, location) {
+		return _Memory.load(value, location);
+	};
 
 };

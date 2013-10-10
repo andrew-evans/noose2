@@ -48,8 +48,15 @@ function shellInit() {
 	// run
     sc = new ShellCommand();
     sc.command = "run";
-    sc.description = "- Runs a program from memory.";
+    sc.description = "<pid> - Runs a program from memory.";
     sc.function = shellRun;
+    this.commandList[this.commandList.length] = sc;
+
+	// step
+    sc = new ShellCommand();
+    sc.command = "step";
+    sc.description = "<pid> - Runs a program in step-thru mode.";
+    sc.function = shellStep;
     this.commandList[this.commandList.length] = sc;
 
     // date
@@ -381,8 +388,8 @@ function shellRun(args)
 	if (args.length > 0) {
 		var process = _MemoryManager.getProcess(parseInt(args[0]));
 		if (process !== null) {
-			_StdIn.putText("Found program PID " + process.pid + " at location " + process.location);
-			_CPU.run();
+			krnTrace("Found program PID " + process.pid + " at location " + process.location);
+			_CPU.run(process);
 		}
 		else {
 			_StdIn.putText("No program with PID " + args[0] + " exists in memory.");
@@ -391,6 +398,13 @@ function shellRun(args)
 	else {
 		_StdIn.putText("Please supply a PID as an argument.");
 	}
+}
+
+function shellStep(args)
+{
+	//TODO
+	_StdIn.putText("This command does not exist yet :(");
+	_StdIn.advanceLine();
 }
 
 function shellDate(args)
@@ -511,7 +525,10 @@ function shellStatus(args)
 {
 	if (args.length > 0)
 	{
-		_Status = args[0];
+		_Status = "";
+		for (var i = 0; i < args.length; i += 1) {
+			_Status += args[i] + " ";
+		}
 	}
 	else
 	{
