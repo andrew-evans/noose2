@@ -30,7 +30,7 @@ function modulo(a, b) {
 		return a % b;
 	}
 	else {
-		return modulo(a + b, b);
+		return (a % b) + b;
 	}
 }
 

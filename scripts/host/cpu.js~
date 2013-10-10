@@ -60,6 +60,8 @@ function Cpu() {
 
 		if (this.stepMode == true) {
 			_StdIn.putText("Step-thru execution completed.");
+			_StdIn.advanceLine();
+			_OsShell.putPrompt();
 			this.stepMode = false;
 		}
 	};

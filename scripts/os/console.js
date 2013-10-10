@@ -138,6 +138,18 @@ function CLIconsole() {
 
 	this.clearLine = function() {
 		this.CurrentXPosition = 0;
-		_DrawingContext.clearRect(0, this.CurrentYPosition + 7, _Canvas.width, -_LineHeight - 4);
+		_DrawingContext.clearRect(0, this.CurrentYPosition + 7, _Canvas.width, -_LineHeight - 3);
+	};
+
+	//To be used by the CPU when printing from user programs
+	//This function clears the current line of any command input,
+	//prints the desired text, moves the line down,
+	//and reprints the existing command buffer.
+	this.putTextAbovePrompt = function(text) {
+		this.clearLine();
+		this.putText(text);
+		this.advanceLine();
+		_OsShell.putPrompt();
+		this.putText(this.buffer);
 	};
 }

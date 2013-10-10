@@ -16,7 +16,7 @@ function MemoryManager() {
 
 	this.loadProgram = function(programString, location) {
 		var currentLocation = location;
-		var opCodes = programString.split(" ");
+		var opCodes = programString.split(/\s/);
 		var i = 0;
 
 		while (i < opCodes.length) {
@@ -24,9 +24,7 @@ function MemoryManager() {
 				return null;
 			}
 			
-			this.writeValue(parseInt(opCodes[i],16), currentLocation);
-			i += 1;
-			currentLocation += 1;
+			this.writeValue(parseInt(opCodes[i++],16), currentLocation++);
 		}
 
 		//create a new PCB and pass in the necessary values
