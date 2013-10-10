@@ -72,6 +72,16 @@ function krnKbdDispatchKeyPress(params)
 		chr = String.fromCharCode(18);
 		_KernelInputQueue.enqueue(chr);
 	}
+	else if (keyCode == 19)		//Pause/Break
+	{
+		//I could have listed this with space, enter, etc
+		//but it's a special case, so it goes here.
+		//chr = String.fromCharCode(19);
+		//_KernelInputQueue.enqueue(chr);
+		if (_CPU.stepMode == true) {
+			_CPU.isExecuting = true;
+		}
+	}
 	else if ((keyCode >= 48) && (keyCode <= 57))
 	{
 		if (!isShifted)

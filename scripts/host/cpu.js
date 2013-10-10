@@ -21,6 +21,7 @@ function Cpu() {
     this.Zflag = 0;     // Z-ero flag (Think of it as "isZero".)
     this.isExecuting = false;
 	this.process = null;
+	this.stepMode = false;
     
     this.init = function() {
         this.PC    = 0;
@@ -56,6 +57,13 @@ function Cpu() {
 		else {
 			this.process.saveCPU();
 		}
+
+		if (this.stepMode == true) {
+			_StdIn.putText("Step-thru execution completed.");
+			_StdIn.advanceLine();
+			_OsShell.putPrompt();
+			this.stepMode = false;
+		}
 	};
     
     this.cycle = function() {
@@ -68,6 +76,9 @@ function Cpu() {
 		krnTrace(instr);
 		//execute the instruction
 		this.execute(instr);
+		if (this.stepMode == true) {
+			this.isExecuting = false;
+		}
     };
 
 	//fetches the current byte in memory and increments the PC
@@ -178,10 +189,10 @@ function Cpu() {
 				address = this.getAddress();
 				value = _MemoryManager.readValue(address);
 				if (value == this.Xreg) {
-					this.Zflag = true;
+					this.Zflag = 1;
 				}
 				else {
-					this.Zflag = false;
+					this.Zflag = 0;
 				}
 				break;
 
@@ -193,7 +204,7 @@ function Cpu() {
 				//this way, the following byte never gets seen as an op code.
 				value = this.fetch();
 
-				if (this.Zflag == false) {
+				if (this.Zflag == 0) {
 					this.PC = modulo(this.PC + value, _MemoryManager.memoryLimit);
 				}
 				break;

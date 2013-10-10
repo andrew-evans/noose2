@@ -385,6 +385,20 @@ function shellLoad(args)
 
 function shellRun(args)
 {
+	_CPU.stepMode = false;
+	shellRunGeneric(args);
+}
+
+function shellStep(args)
+{
+	_CPU.stepMode = true;
+	_StdIn.putText("Press PAUSE/BREAK to step forward in program execution.");
+	shellRunGeneric(args);
+}
+
+//Handles running programs after the run or step command sets the step mode.
+function shellRunGeneric(args)
+{
 	if (args.length > 0) {
 		var process = _MemoryManager.getProcess(parseInt(args[0]));
 		if (process !== null) {
@@ -398,13 +412,6 @@ function shellRun(args)
 	else {
 		_StdIn.putText("Please supply a PID as an argument.");
 	}
-}
-
-function shellStep(args)
-{
-	//TODO
-	_StdIn.putText("This command does not exist yet :(");
-	_StdIn.advanceLine();
 }
 
 function shellDate(args)

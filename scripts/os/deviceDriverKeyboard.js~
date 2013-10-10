@@ -28,7 +28,6 @@ function krnKbdDriverEntry()
 
 function krnKbdDispatchKeyPress(params)
 {
-    // Parse the params.    TODO: Check that they are valid and osTrapError if not.
     var keyCode = params[0];
     var isShifted = params[1];
 
@@ -72,6 +71,13 @@ function krnKbdDispatchKeyPress(params)
 	{
 		chr = String.fromCharCode(18);
 		_KernelInputQueue.enqueue(chr);
+	}
+	else if (keyCode == 19)		//Pause/Break
+	{
+		//I could have listed this with space, enter, etc
+		//but it's a special case, so it goes here.
+		//chr = String.fromCharCode(19);
+		//_KernelInputQueue.enqueue(chr);
 	}
 	else if ((keyCode >= 48) && (keyCode <= 57))
 	{
@@ -173,6 +179,8 @@ function krnKbdDispatchKeyPress(params)
 		else
 		{
 			//We don't know how to handle it; yell at the log.
+			//I really don't feel like this should BSOD the system, so it doesn't.
+			//TODO: play some sort of error-y sound effect if possible
 			krnTrace("Keystroke not recognized by OS");
 		}
 	}
