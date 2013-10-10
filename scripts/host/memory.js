@@ -21,9 +21,12 @@ function Memory() {
 		//If we do things properly elsewhere (program validation, etc) we
 		//should only get values lower than the word size. But just in case,
 		//we mod the number by the word size before storing it.
+		//Same applies for address locations and memory size.
 
 		//Javascript does not properly compute mod for negatives, so I've
 		//substituted my own function.
+		location = modulo(location, this.memoryLimit);
+
 		if (location >= 0 && location < this.memoryLimit) {
 			this.mem[location] = modulo(value,this.wordSize);
 			return true;

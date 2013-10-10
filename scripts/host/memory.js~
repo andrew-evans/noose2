@@ -24,7 +24,7 @@ function Memory() {
 
 		//Javascript does not properly compute mod for negatives, so I've
 		//substituted my own function.
-		if (location > 0 && location < this.memoryLimit) {
+		if (location >= 0 && location < this.memoryLimit) {
 			this.mem[location] = modulo(value,this.wordSize);
 			return true;
 		}

@@ -56,7 +56,6 @@ function Cpu() {
 		else {
 			this.process.saveCPU();
 		}
-		_OsShell.putPrompt();
 	};
     
     this.cycle = function() {
@@ -217,6 +216,7 @@ function Cpu() {
 				if (this.Xreg == 0x01) {
 					_StdIn.putText("" + this.Yreg);
 					_StdIn.advanceLine();
+					_OsShell.putPrompt();
 				}
 				else if (this.Xreg == 0x02) {
 					address = this.Yreg;
@@ -231,11 +231,14 @@ function Cpu() {
 					}
 					_StdIn.putText(string);
 					_StdIn.advanceLine();
+					_OsShell.putPrompt();
 				}
 				break;
 
 			default:
 				_StdIn.putText("Invalid op code reached - Aborting execution.");
+				_StdIn.advanceLine();
+				_OsShell.putPrompt();
 				this.terminate(false);
 				break;
 		}
