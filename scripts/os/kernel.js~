@@ -104,26 +104,47 @@ function krnOnCPUClockPulse()
 	_StatusBar.getContext('2d').fillText("Status: " + _Status, 1000, 22);
 
 	// Update the memory table view
-	var memoryString = " ADD |  HEX   |    BINARY    |   DEC   | ASCII\n" +
-					   "----------------------------------------------\n";
-	for (var i = 0; i < _Memory.memoryLimit; i++) {
-		memoryString += " " + zeroPad(i.toString(16), 2) + "  |   " +
-				zeroPad(_Memory.mem[i].toString(16), 2) + "   |   " +
-				zeroPad(_Memory.mem[i].toString(2), 8) + "   |   " +  
-				zeroPad(_Memory.mem[i].toString(10), 3) + "   |   " +
-				String.fromCharCode(_Memory.mem[i]) + "\n";
+	var memoryString = "";
+	
+	if (_MemoryDisplayMode == 0) {
+		memoryString = " ADD  |  HEX   |    BINARY    |   DEC   | ASCII\n" +
+					   "-----------------------------------------------\n";
+		var PCstring = "";
+		for (var i = 0; i < _Memory.memoryLimit; i++) {
+			//This string indicates where the PC is in the memory table view
+			//It will only be shown during CPU execution or step-thru execution
+			if (_CPU.PC == i && (_CPU.isExecuting == true || _CPU.stepMode == true))
+				PCstring = "**";
+			else
+				PCstring = "  ";
+
+			memoryString += PCstring + zeroPad(i.toString(16), 2) + "  |   " +
+					zeroPad(_Memory.mem[i].toString(16), 2) + "   |   " +
+					zeroPad(_Memory.mem[i].toString(2), 8) + "   |   " +  
+					zeroPad(_Memory.mem[i].toString(10), 3) + "   |   " +
+					String.fromCharCode(_Memory.mem[i]) + "\n";
+		}
+	}
+	else {
+		for (var i = 0; i < _Memory.memoryLimit; i++) {
+			memoryString += zeroPad(_Memory.mem[i].toString(16), 2) + " ";
+			if (modulo(i + 1, 16) == 0) {
+				memoryString += "\n";
+			}
+		}
 	}
 
 	_MemoryDisplay.value = memoryString;
 
 	//Update the CPU table view
-	var CPUString = "";
-	//This is probably bad programming, but it's easy to read.
-	CPUString += "PC    \t-\t" + _CPU.PC + "\n";
-	CPUString += "Acc   \t-\t" + _CPU.Acc + "\n";
-	CPUString += "X Reg \t-\t" + _CPU.Xreg + "\n";
-	CPUString += "Y Reg \t-\t" + _CPU.Yreg + "\n";
-	CPUString += "Z Flag\t-\t" + _CPU.Zflag + "\n";
+
+	var CPUString = "PC    \t-\t" + _CPU.PC + "\t0x" + zeroPad(_CPU.PC.toString(16), 2) + "\n"
+		+ "Acc   \t-\t" + _CPU.Acc + "\n"
+		+ "X Reg \t-\t" + _CPU.Xreg + "\n"
+		+ "Y Reg \t-\t" + _CPU.Yreg + "\n"
+		+ "Z Flag\t-\t" + _CPU.Zflag + "\n\n"
+		+ "Executing: " + _CPU.isExecuting + "\n"
+		+ "Step Mode: " + _CPU.stepMode;
 
 	_CPUDisplay.value = CPUString;
 

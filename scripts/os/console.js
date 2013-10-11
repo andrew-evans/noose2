@@ -117,7 +117,7 @@ function CLIconsole() {
 			//Ron Coleman would be proud of these magic numbers.
 			//TODO: get rid of them.
 			_DrawingContext.clearRect(this.CurrentXPosition, this.CurrentYPosition + 7,
-				offset, -_LineHeight - 4);
+				offset, -_LineHeight - 3);
 		}
 	};
 

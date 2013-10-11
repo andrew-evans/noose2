@@ -59,9 +59,7 @@ function Cpu() {
 		}
 
 		if (this.stepMode == true) {
-			_StdIn.putText("Step-thru execution completed.");
-			_StdIn.advanceLine();
-			_OsShell.putPrompt();
+			_StdIn.putTextAbovePrompt("Step-thru execution completed.");
 			this.stepMode = false;
 		}
 	};

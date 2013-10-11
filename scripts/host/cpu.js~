@@ -225,9 +225,7 @@ function Cpu() {
 			//if 2, print the value from the address in the Y reg as a string.
 			case (0xFF):
 				if (this.Xreg == 0x01) {
-					_StdIn.putText("" + this.Yreg);
-					_StdIn.advanceLine();
-					_OsShell.putPrompt();
+					_StdIn.putTextAbovePrompt("" + this.Yreg);
 				}
 				else if (this.Xreg == 0x02) {
 					address = this.Yreg;
@@ -240,16 +238,14 @@ function Cpu() {
 						address = modulo(address + 1, _MemoryManager.memoryLimit);
 						value = _MemoryManager.readValue(address);
 					}
-					_StdIn.putText(string);
-					_StdIn.advanceLine();
-					_OsShell.putPrompt();
+					_StdIn.putTextAbovePrompt(string);
 				}
 				break;
 
 			default:
-				_StdIn.putText("Invalid op code reached - Aborting execution.");
-				_StdIn.advanceLine();
-				_OsShell.putPrompt();
+				_StdIn.putTextAbovePrompt("Invalid op code reached - Aborting execution.");
+				//_StdIn.advanceLine();
+				//_OsShell.putPrompt();
 				this.terminate(false);
 				break;
 		}

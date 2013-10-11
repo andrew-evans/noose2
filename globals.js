@@ -49,6 +49,8 @@ var _ProgramInput = null;	  //Initialized in hostInit().
 var _MemoryDisplay = null;        //Initialized in hostInit().
 var _CPUDisplay = null;		  //Initialized in hostInit().
 
+var _MemoryDisplayMode = 0;	//0 = detailed single row view, 1 = simple grid view
+
 // Default the OS trace to be on.
 var _Trace = true;
 

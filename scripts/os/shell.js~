@@ -127,7 +127,13 @@ function shellInit() {
     sc.command = "status";
     sc.description = "<string> - Sets the status.";
     sc.function = shellStatus;
+    this.commandList[this.commandList.length] = sc;
 
+	// mem
+    sc = new ShellCommand();
+    sc.command = "mem";
+    sc.description = "- Toggles the memory view";
+    sc.function = shellMemView;
     this.commandList[this.commandList.length] = sc;
 
     // bsod
@@ -392,8 +398,9 @@ function shellRun(args)
 function shellStep(args)
 {
 	_CPU.stepMode = true;
-	_StdIn.putText("Press PAUSE/BREAK to step forward in program execution.");
-	shellRunGeneric(args);
+	if (shellRunGeneric(args)) {
+		_StdIn.putText("Press PAUSE/BREAK to step forward in program execution.");
+	}
 }
 
 //Handles running programs after the run or step command sets the step mode.
@@ -404,13 +411,16 @@ function shellRunGeneric(args)
 		if (process !== null) {
 			krnTrace("Found program PID " + process.pid + " at location " + process.location);
 			_CPU.run(process);
+			return true;
 		}
 		else {
 			_StdIn.putText("No program with PID " + args[0] + " exists in memory.");
+			return false;
 		}
 	}
 	else {
 		_StdIn.putText("Please supply a PID as an argument.");
+		return false;
 	}
 }
 
@@ -543,15 +553,34 @@ function shellStatus(args)
 	}
 }
 
+//changes the view mode of the displayed memory.
+function shellMemView(args)
+{
+	_MemoryDisplayMode = !_MemoryDisplayMode;
+	
+	if (_MemoryDisplayMode == 0) {
+		_StdIn.putText("Memory view set to detailed mode.");
+	}
+	else {
+		_StdIn.putText("Memory view set to simple mode.");
+	}
+}
+
 function shellBSOD(args)
 {
 	_Status = "FUGGED UP";
 
+	var image = new Image();
+	image.src = "images/upset-cat.png";
+	image.onload = function() {
+		_DrawingContext.drawImage(image, -25, 50);
+	};
+
 	_DrawingContext.fillStyle = '#0000FF';
 	_DrawingContext.fillRect(0,0, _Canvas.width, _Canvas.height);
 	_DrawingContext.fillStyle = "white";
-  	_DrawingContext.font = "bold 32px Wingdings";
-  	_DrawingContext.fillText("fug, u fuggen broke it.", 50, _Canvas.height / 2);
+  	_DrawingContext.font = "bold 32px Trebuchet";
+  	_DrawingContext.fillText("why would you do that :(", 30, _Canvas.height * 0.8);
 	krnShutdown();
 	clearInterval(_hardwareClockID);
 }
