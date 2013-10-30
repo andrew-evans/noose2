@@ -59,6 +59,13 @@ function shellInit() {
     sc.function = shellStep;
     this.commandList[this.commandList.length] = sc;
 
+	// kill
+    sc = new ShellCommand();
+    sc.command = "kill";
+    sc.description = "<pid> - Ends execution of a given program.";
+    sc.function = shellKill;
+    this.commandList[this.commandList.length] = sc;
+
     // date
     sc = new ShellCommand();
     sc.command = "date";
@@ -104,7 +111,7 @@ function shellInit() {
     // trace <on | off>
     sc = new ShellCommand();
     sc.command = "trace";
-    sc.description = "<on | off> - Turns the OS trace on or off.";
+    sc.description = "- Turns the OS trace on or off.";
     sc.function = shellTrace;
     this.commandList[this.commandList.length] = sc;
 
@@ -132,7 +139,7 @@ function shellInit() {
 	// mem
     sc = new ShellCommand();
     sc.command = "mem";
-    sc.description = "- Toggles the memory view";
+    sc.description = "- Toggles the memory view.";
     sc.function = shellMemView;
     this.commandList[this.commandList.length] = sc;
 
@@ -424,6 +431,19 @@ function shellRunGeneric(args)
 	}
 }
 
+function shellKill(args)
+{
+	if (args.length > 0) {
+		//Tell the memory manager to flag the process as terminated.
+		var pid = parseInt(args[0]);
+		_MemoryManager.endProcess(pid);
+	}
+	else {
+		_StdIn.putText("Please supply a PID as an argument.");
+		return false;
+	}
+}
+
 function shellDate(args)
 {
     var date = new Date();
@@ -483,7 +503,14 @@ function shellMan(args)
 
 function shellTrace(args)
 {
-    if (args.length > 0)
+	_Trace = !_Trace;
+	if (_Trace) {
+		_StdIn.putText("Trace ON");
+	}
+	else {
+		_StdIn.putText("Trace OFF");
+	}
+    /*if (args.length > 0)
     {
         var setting = args[0];
         switch (setting)
@@ -511,7 +538,7 @@ function shellTrace(args)
     else
     {
         _StdIn.putText("Usage: trace <on | off>");
-    }
+    }*/
 }
 
 function shellRot13(args)
@@ -573,7 +600,7 @@ function shellBSOD(args)
 	var image = new Image();
 	image.src = "images/upset-cat.png";
 	image.onload = function() {
-		_DrawingContext.drawImage(image, -25, 50);
+		_DrawingContext.drawImage(image, 0, 50);
 	};
 
 	_DrawingContext.fillStyle = '#0000FF';

@@ -107,7 +107,7 @@ function krnOnCPUClockPulse()
 	var memoryString = "";
 	
 	if (_MemoryDisplayMode == 0) {
-		memoryString = " ADD  |  HEX   |    BINARY    |   DEC   | ASCII\n" +
+		memoryString = " ADD   |  HEX  |    BINARY    |   DEC   | ASCII\n" +
 					   "-----------------------------------------------\n";
 		var PCstring = "";
 		for (var i = 0; i < _Memory.memoryLimit; i++) {
@@ -118,8 +118,8 @@ function krnOnCPUClockPulse()
 			else
 				PCstring = "  ";
 
-			memoryString += PCstring + zeroPad(i.toString(16), 2) + "  |   " +
-					zeroPad(_Memory.mem[i].toString(16), 2) + "   |   " +
+			memoryString += PCstring + zeroPad(i.toString(16), 3) + "  |  " +
+					zeroPad(_Memory.mem[i].toString(16), 2) + "  |   " +
 					zeroPad(_Memory.mem[i].toString(2), 8) + "   |   " +  
 					zeroPad(_Memory.mem[i].toString(10), 3) + "   |   " +
 					String.fromCharCode(_Memory.mem[i]) + "\n";

@@ -62,7 +62,8 @@ function hostLog(msg, source)
     var now = new Date().getTime();
 
     // Build the log string.   
-    var str = "({ clock:" + clock + ", source:" + source + ", msg:" + msg + ", now:" + now  + " })"  + "\n";    
+    //var str = "({ clock:" + clock + ", source:" + source + ", msg:" + msg + ", now:" + now  + " })"  + "\n";
+    var str = "Clock " + clock + " - " + source + ": " + msg + "\n";
 
     // Update the log console.
     var taLog = document.getElementById("taLog");

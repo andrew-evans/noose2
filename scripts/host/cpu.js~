@@ -22,6 +22,10 @@ function Cpu() {
     this.isExecuting = false;
 	this.process = null;
 	this.stepMode = false;
+
+	//probably bad, but we will use this to track the location of bad op codes.
+	//by the time the op code is read, the PC has already moved.
+	this.lastPC = 0;
     
     this.init = function() {
         this.PC    = 0;
@@ -43,6 +47,7 @@ function Cpu() {
 	//sets up the CPU to run a given process from a control block.
 	this.run = function(process) {
 		this.process = process;
+		this.process.state = "RUNNING";
 		this.loadPCB(process);
 		this.isExecuting = true;
 	};
@@ -50,26 +55,35 @@ function Cpu() {
 	//ends the execution of the process.
 	this.terminate = function(expected) {
 		this.isExecuting = false;
+
 		//update the PCB
+		this.process.state = "TERMINATED";
+
 		if (expected == true) {
 			this.process.resetCPU();
+			if (this.stepMode == true) {
+				_StdIn.putTextAbovePrompt("Step-thru execution completed.");
+			}
 		}
 		else {
+			_StdIn.putTextAbovePrompt("Program " + this.process.pid + " execution ended unexpectedly.");
 			this.process.saveCPU();
 		}
 
-		if (this.stepMode == true) {
-			_StdIn.putText("Step-thru execution completed.");
-			_StdIn.advanceLine();
-			_OsShell.putPrompt();
-			this.stepMode = false;
-		}
+		//The process ended somehow, so we turn off step mode.
+		this.stepMode = false;
+		
 	};
     
     this.cycle = function() {
         krnTrace("CPU cycle");
         // TODO: Accumulate CPU usage and profiling statistics here.
         // Do the real work here. Be sure to set this.isExecuting appropriately.
+
+		if (this.process.state === "TERMINATED") {
+			//Program did not reach the end, so it was not expected.
+			this.terminate(false);
+		}
 
 		//fetch the next instruction
 		var instr = this.fetch();
@@ -242,13 +256,17 @@ function Cpu() {
 				}
 				break;
 
+			//None of the known op codes was reached, so we must end execution.
 			default:
-				_StdIn.putTextAbovePrompt("Invalid op code reached - Aborting execution.");
-				//_StdIn.advanceLine();
-				//_OsShell.putPrompt();
+				//give the user the relative last PC location
+				//this will be the location in the program itself, not the location in memory!
+				_StdIn.putTextAbovePrompt("Invalid op code " + instr.toString(16).toUpperCase() + " reached at line " + (this.lastPC - this.process.location + 1) + ".");
 				this.terminate(false);
 				break;
 		}
+
+		//update our magical last PC register after everything else happens.
+		this.lastPC = this.PC;
 	};
 
 	//from the current location, "fetch" the next two bytes and combine them to

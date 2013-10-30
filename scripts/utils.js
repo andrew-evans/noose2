@@ -17,6 +17,7 @@ function trim(str) {     // Use a regular expression to remove leading and trail
 	
 }
 
+//returns a string which has been left-padded with zeros until the given length is reached.
 function zeroPad(str, length) {
 	while (str.length < length) {
 		str = "0" + str;
@@ -24,7 +25,7 @@ function zeroPad(str, length) {
 	return str;
 }
 
-//Needlessly recursive modulo function that handles negative values of a
+//better modulo function that handles negative values of a
 function modulo(a, b) {
 	if (a >= 0) {
 		return a % b;

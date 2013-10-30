@@ -13,6 +13,9 @@ function PCB() {
 	this.locationEnd = -1;
 	this.len = -1;
 
+	this.state = "NEW";
+	//NEW, RUNNING, WAITING, READY, TERMINATED 
+
 	this.resetCPU = function() {
 		this.PC    = 0;     // Program Counter
 		this.Acc   = 0;     // Accumulator

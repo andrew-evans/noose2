@@ -59,6 +59,13 @@ function shellInit() {
     sc.function = shellStep;
     this.commandList[this.commandList.length] = sc;
 
+	// kill
+    sc = new ShellCommand();
+    sc.command = "kill";
+    sc.description = "<pid> - Ends execution of a given program.";
+    sc.function = shellKill;
+    this.commandList[this.commandList.length] = sc;
+
     // date
     sc = new ShellCommand();
     sc.command = "date";
@@ -101,10 +108,10 @@ function shellInit() {
     sc.function = shellMan;
     this.commandList[this.commandList.length] = sc;
     
-    // trace <on | off>
+    // trace
     sc = new ShellCommand();
     sc.command = "trace";
-    sc.description = "<on | off> - Turns the OS trace on or off.";
+    sc.description = "- Turns the OS trace on or off.";
     sc.function = shellTrace;
     this.commandList[this.commandList.length] = sc;
 
@@ -132,7 +139,7 @@ function shellInit() {
 	// mem
     sc = new ShellCommand();
     sc.command = "mem";
-    sc.description = "- Toggles the memory view";
+    sc.description = "- Toggles the memory view.";
     sc.function = shellMemView;
     this.commandList[this.commandList.length] = sc;
 
@@ -424,6 +431,19 @@ function shellRunGeneric(args)
 	}
 }
 
+function shellKill(args)
+{
+	if (args.length > 0) {
+		//Tell the memory manager to flag the process as terminated.
+		var pid = parseInt(args[0]);
+		_MemoryManager.endProcess(pid);
+	}
+	else {
+		_StdIn.putText("Please supply a PID as an argument.");
+		return false;
+	}
+}
+
 function shellDate(args)
 {
     var date = new Date();
@@ -483,35 +503,14 @@ function shellMan(args)
 
 function shellTrace(args)
 {
-    if (args.length > 0)
-    {
-        var setting = args[0];
-        switch (setting)
-        {
-            case "on": 
-                if (_Trace && _SarcasticMode)
-                {
-                    _StdIn.putText("Trace is already on, dumbass.");
-                }
-                else
-                {
-                    _Trace = true;
-                    _StdIn.putText("Trace ON");
-                }
-                
-                break;
-            case "off": 
-                _Trace = false;
-                _StdIn.putText("Trace OFF");                
-                break;                
-            default:
-                _StdIn.putText("Invalid arguement.  Usage: trace <on | off>.");
-        }        
-    }
-    else
-    {
-        _StdIn.putText("Usage: trace <on | off>");
-    }
+	//changed this to keep consist with noOSe style commands, and simplicity.
+	_Trace = !_Trace;
+	if (_Trace) {
+		_StdIn.putText("Trace ON");
+	}
+	else {
+		_StdIn.putText("Trace OFF");
+	}
 }
 
 function shellRot13(args)

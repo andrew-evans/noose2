@@ -6,7 +6,7 @@
 
 function Memory() {
 
-	this.memoryLimit = 256;
+	this.memoryLimit = 1024;
 	this.wordSize = 256;
 	this.mem = [];
 
@@ -35,4 +35,11 @@ function Memory() {
 			return false;
 		}
 	};
+
+	//writes zeroes between and including two given addresses.
+	this.clearMemory = function(start, end) {
+		for (var i = start; i <= end; i += 1) {
+			this.load(0, i);
+		}
+	}
 };

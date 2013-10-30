@@ -16,7 +16,7 @@ function MemoryManager() {
 
 	this.loadProgram = function(programString, location) {
 		var currentLocation = location;
-		var opCodes = programString.split(/\s/);
+		var opCodes = programString.split(" ");
 		var i = 0;
 
 		while (i < opCodes.length) {
@@ -34,6 +34,12 @@ function MemoryManager() {
 		this.pid++;
 
 		return pcb;
+	};
+
+	this.endProcess = function(pid) {
+		var pcb = this.getProcess(pid);
+		pcb.state = "TERMINATED";
+		_Memory.clearMemory(pcb.location, pcb.locationEnd);
 	};
 
 	this.getProcess = function(pid) {

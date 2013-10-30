@@ -36,6 +36,13 @@ function MemoryManager() {
 		return pcb;
 	};
 
+	this.endProcess = function(pid) {
+		var pcb = this.getProcess(pid);
+		pcb.state = "TERMINATED";
+		_Memory.clearMemory(pcb.location, pcb.locationEnd);
+		//TODO
+	};
+
 	this.getProcess = function(pid) {
 		for (var i = 0; i < this.processes.length; i++) {
 			if (this.processes[i].pid == pid) {
@@ -44,6 +51,10 @@ function MemoryManager() {
 		}
 		
 		return null;
+	};
+
+	this.removeProcess = function(pid) {
+		//TODO
 	};
 
 	this.readValue = function(location) {
