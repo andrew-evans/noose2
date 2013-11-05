@@ -53,6 +53,14 @@ h3 {
 	font-style: bold;
 }
 
+#taReady {
+	background-color: #333333;
+	color: white;
+	font-family: Courier New, serif, monospace;
+	font-size: 10pt;
+	font-style: bold;
+}
+
 #taLog {
 	background-color: #333333;
 	color: white;

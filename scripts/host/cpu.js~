@@ -256,7 +256,7 @@ function Cpu() {
 				}
 				break;
 
-			//None of the known op codes was reached, so we must end execution.
+			//None of the known op codes were reached, so we must end execution
 			default:
 				//give the user the relative last PC location
 				//this will be the location in the program itself, not the location in memory!

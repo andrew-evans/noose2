@@ -114,6 +114,13 @@ function shellInit() {
     sc.description = "- Turns the OS trace on or off.";
     sc.function = shellTrace;
     this.commandList[this.commandList.length] = sc;
+    
+    // quantum <number>
+    sc = new ShellCommand();
+    sc.command = "quantum";
+    sc.description = "<clock ticks> - Sets the round robin scheduling quantum.";
+    sc.function = shellQuantum;
+    this.commandList[this.commandList.length] = sc;
 
     // rot13 <string>
     sc = new ShellCommand();
@@ -377,10 +384,10 @@ function shellLoad(args)
 	krnTrace(_ProgramInput.value);
 	var programValid = pattern.test(_ProgramInput.value);
 	
-	//Call the memory manager to load the program into location #0000
+	//Call the memory manager to load the program into main memory.
 	if (programValid)
 	{
-		var pcb = _MemoryManager.loadProgram(_ProgramInput.value, 0x0000);
+		var pcb = _MemoryManager.loadProgram(_ProgramInput.value);
 		if (pcb !== null)
 		{
 			_StdIn.putText("Program successfully loaded with PID " + pcb.pid);
@@ -499,6 +506,22 @@ function shellMan(args)
     {
         _StdIn.putText("Usage: man <topic>  Please supply a topic.");
     }
+}
+
+function shellQuantum(args)
+{
+	if (args.length > 0) {
+		var value = parseInt(args[1]);
+		if (value > 0) {
+			_Quantum = value;
+		}
+		else {
+			_StdIn.putText("Please enter a positive number.");
+		}
+	}
+	else {
+		_StdIn.putText("Please supply a quantum number as an argument.");
+	}
 }
 
 function shellTrace(args)

@@ -147,7 +147,14 @@ function krnOnCPUClockPulse()
 		+ "Step Mode: " + _CPU.stepMode;
 
 	_CPUDisplay.value = CPUString;
-
+	
+	
+	var readyString = "";
+	for (var i = 0; i < _MemoryManager.processes.length; i += 1) {
+		readyString += "PID: " + _MemoryManager.processes[i].pid + "\n";
+	}
+	
+	_ReadyQueueDisplay.value = readyString;
 }
 
 

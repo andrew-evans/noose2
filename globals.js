@@ -12,7 +12,7 @@
 // Global CONSTANTS
 //
 var APP_NAME = "noOSe";
-var APP_VERSION = "0.3 - business cat";
+var APP_VERSION = "0.3 - keyboard cat";
 var APP_DESCRIPTION = "Notably Optimistic Operating System for Enjoyment!"
 
 var CPU_CLOCK_INTERVAL = 100;   // This is in ms, or milliseconds, so 1000 = 1 second.
@@ -28,6 +28,8 @@ var KEYBOARD_IRQ = 1;
 var _CPU = null;
 var _Memory = null;
 var _MemoryManager = null;
+
+var _Quantum = 6;		//clock tick amount for round robin scheduling;
 
 var _OSclock = 0;       // Page 23.
 
@@ -48,6 +50,7 @@ var _Status = "Business Time.";		  //Current status of the OS
 var _ProgramInput = null;	  //Initialized in hostInit().
 var _MemoryDisplay = null;        //Initialized in hostInit().
 var _CPUDisplay = null;		  //Initialized in hostInit().
+var _ReadyQueueDisplay = null;	//Initialized in hostInit().
 
 var _MemoryDisplayMode = 0;	//0 = detailed single row view, 1 = simple grid view
 

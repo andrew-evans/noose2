@@ -107,7 +107,7 @@ function krnOnCPUClockPulse()
 	var memoryString = "";
 	
 	if (_MemoryDisplayMode == 0) {
-		memoryString = " ADD   |  HEX  |    BINARY    |   DEC   | ASCII\n" +
+		memoryString = "  ADD  | HEX  |    BINARY    |   DEC   | ASCII\n" +
 					   "-----------------------------------------------\n";
 		var PCstring = "";
 		for (var i = 0; i < _Memory.memoryLimit; i++) {
@@ -147,7 +147,14 @@ function krnOnCPUClockPulse()
 		+ "Step Mode: " + _CPU.stepMode;
 
 	_CPUDisplay.value = CPUString;
-
+	
+	
+	var readyString = "";
+	for (var i = 0; i < _MemoryManager.processes.length; i += 1) {
+		readyString += "PID: " + _MemoryManager.processes[i].pid;
+	}
+	
+	_ReadyQueueDisplay.value = readyString;
 }
 
 

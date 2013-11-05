@@ -29,6 +29,8 @@ var _CPU = null;
 var _Memory = null;
 var _MemoryManager = null;
 
+var _Quantum = 6;		//clock tick amount for round robin scheduling;
+
 var _OSclock = 0;       // Page 23.
 
 var _Mode = 0;   // 0 = Kernel Mode, 1 = User Mode.  See page 21.
@@ -43,11 +45,12 @@ var _ScrollCutoff = 20;		  // Space to leave at the bottom of the canvas when sc
 var _LineHeight = 17;		  //height of a single CLI line.
 
 var _StatusBar = null;		  //Initialized in hostInit().
-var _Status = "OK";		  //Current status of the OS
+var _Status = "Business Time.";		  //Current status of the OS
 
 var _ProgramInput = null;	  //Initialized in hostInit().
 var _MemoryDisplay = null;        //Initialized in hostInit().
 var _CPUDisplay = null;		  //Initialized in hostInit().
+var _ReadyQueueDisplay = null;	//Initialized in hostInit().
 
 var _MemoryDisplayMode = 0;	//0 = detailed single row view, 1 = simple grid view
 

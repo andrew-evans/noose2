@@ -13,6 +13,8 @@ function PCB() {
 	this.locationEnd = -1;
 	this.len = -1;
 
+	this.partition = -1;
+	
 	this.state = "NEW";
 	//NEW, RUNNING, WAITING, READY, TERMINATED 
 
@@ -26,11 +28,12 @@ function PCB() {
 
 	this.resetCPU();
 
-	this.init = function(pid, location, len) {
+	this.init = function(pid, location, len, partition) {
 		this.pid = pid;
 		this.location = location;
 		this.len = len;
 		this.locationEnd = location + len - 1;
+		this.partition = partition;
 	};
 
 	this.saveCPU = function() {

@@ -108,11 +108,18 @@ function shellInit() {
     sc.function = shellMan;
     this.commandList[this.commandList.length] = sc;
     
-    // trace <on | off>
+    // trace
     sc = new ShellCommand();
     sc.command = "trace";
     sc.description = "- Turns the OS trace on or off.";
     sc.function = shellTrace;
+    this.commandList[this.commandList.length] = sc;
+    
+    // quantum <number>
+    sc = new ShellCommand();
+    sc.command = "quantum";
+    sc.description = "<clock ticks> - Sets the round robin scheduling quantum.";
+    sc.function = shellQuantum;
     this.commandList[this.commandList.length] = sc;
 
     // rot13 <string>
@@ -501,8 +508,25 @@ function shellMan(args)
     }
 }
 
+function shellQuantum(args)
+{
+	if (args.length > 0) {
+		var value = parseInt(args[1]);
+		if (value > 0) {
+			_Quantum = value;
+		}
+		else {
+			_StdIn.putText("Please enter a positive number.");
+		}
+	}
+	else {
+		_StdIn.putText("Please supply a quantum number as an argument.");
+	}
+}
+
 function shellTrace(args)
 {
+	//changed this to keep consist with noOSe style commands, and simplicity.
 	_Trace = !_Trace;
 	if (_Trace) {
 		_StdIn.putText("Trace ON");
@@ -510,35 +534,6 @@ function shellTrace(args)
 	else {
 		_StdIn.putText("Trace OFF");
 	}
-    /*if (args.length > 0)
-    {
-        var setting = args[0];
-        switch (setting)
-        {
-            case "on": 
-                if (_Trace && _SarcasticMode)
-                {
-                    _StdIn.putText("Trace is already on, dumbass.");
-                }
-                else
-                {
-                    _Trace = true;
-                    _StdIn.putText("Trace ON");
-                }
-                
-                break;
-            case "off": 
-                _Trace = false;
-                _StdIn.putText("Trace OFF");                
-                break;                
-            default:
-                _StdIn.putText("Invalid arguement.  Usage: trace <on | off>.");
-        }        
-    }
-    else
-    {
-        _StdIn.putText("Usage: trace <on | off>");
-    }*/
 }
 
 function shellRot13(args)

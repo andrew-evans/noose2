@@ -31,7 +31,7 @@
 
    <!-- Other Routines -->
    <script type="text/javascript" src="scripts/utils.js"></script>
-   <script type="text/javascript" src="http://www.labouseur.com/courses/os/projects/glados.js"></script>
+   <!--<script type="text/javascript" src="http://www.labouseur.com/courses/os/projects/glados.js"></script>-->
 </head>
 
 <body onload="hostInit();">
@@ -74,9 +74,9 @@
    </div>
 
    <table>
-   <tr style="vertical-align:top;">
+   <tr>
 
-	<td style="padding:16px">
+	<td style="padding:8px">
 	   <div id="divMem">
 		  <label>
 		     Memory
@@ -90,37 +90,23 @@
 		     ></textarea>
 		  </label>
 	   </div>
-	   
-	   <div id="divCPU">
-		  <label>
-		     CPU
-		     <br>
-		     <textarea name="taCPU"
-		               id  ="taCPU"
-		               rows="8"
-		               cols="48"
-					   readonly=true
-					   disabled=true
-		     ></textarea>
-		  </label>
-	   </div>
 	</td>
 
-	<td style="padding:10px">
+	<td style="padding:8px">
 	   <div id="divConsole">
 		  <label>
 			Console
 		  <br>
 		  <canvas id="display"
 		          width="500px"
-		          height="600px"
+		          height="438px"
 		          tabindex="3">
 		  </canvas>
 		 </label>
 	   </div>
 	</td>
 
-	<td style="padding:10px">
+	<td style="padding:8px">
 	   <div id="divLog">
 		  <label>
 		     Log
@@ -134,7 +120,43 @@
 		     ></textarea>
 		  </label>
 	   </div>
+	</td>
 
+   </tr>
+   <tr>
+   	 <td style="padding:8px">
+      <div id="divCPU">
+		  <label>
+		     CPU
+		     <br>
+		     <textarea name="taCPU"
+		               id  ="taCPU"
+		               rows="8"
+		               cols="48"
+					   readonly=true
+					   disabled=true
+		     ></textarea>
+		  </label>
+	   </div>
+	  </td>
+	  
+	  <td style="padding:8px">
+	   <div id="divReadyQueue">
+		  <label>
+		     Ready Queue
+		     <br>
+		     <textarea name="taReady"
+		               id  ="taReady"
+		               rows="8"
+		               cols="60"
+					   readonly=true
+					   disabled=true
+		     ></textarea>
+		  </label>
+	   </div>
+	  </td>
+	  
+	  <td style="padding:8px">
 	   <div id="divUserProgramInput">
 		  <label>
 		     User Program Input
@@ -146,8 +168,7 @@
 		     ></textarea>
 		  </label>
 	   </div>
-	</td>
-
+	  </td>
    </tr>
    </table>
 

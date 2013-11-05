@@ -27,6 +27,7 @@ function hostInit()
 	_ProgramInput = document.getElementById('taProgramInput');
 	_MemoryDisplay = document.getElementById('taMem');
 	_CPUDisplay = document.getElementById('taCPU');
+	_ReadyQueueDisplay = document.getElementById('taReady');
 
 	// Get a global reference to the drawing context.
 	_DrawingContext = _Canvas.getContext('2d');
