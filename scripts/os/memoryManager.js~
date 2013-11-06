@@ -7,6 +7,7 @@
 function MemoryManager() {
 
 	this.memoryLimit = _Memory.memoryLimit;
+	this.wordSize = _Memory.wordSize;
 	
 	//number of bytes per partition
 	this.partitionSize = 256;
@@ -27,7 +28,7 @@ function MemoryManager() {
 	};
 
 	this.loadProgram = function(programString) {
-		var opCodes = programString.split(" ");
+		var opCodes = programString.split(/\s+/);
 		var i = 0;
 		
 		var pcb = new PCB();
@@ -39,6 +40,7 @@ function MemoryManager() {
 			return null;
 		}
 		
+		//Search for the first available partition
 		if (this.partitions - this.partitionsFilled() >= partitionsNeeded) {
 			for (var j = 0; j < this.partitions; j += 1) {
 				if (this.partitionStates[j] == 0) {
@@ -55,7 +57,7 @@ function MemoryManager() {
 		var currentLocation = location;
 
 		while (i < opCodes.length) {
-			this.writeValue(parseInt(opCodes[i++],16), currentLocation);
+			this.superWrite(parseInt(opCodes[i++],16), currentLocation);
 			currentLocation += 1;
 		}
 
@@ -89,16 +91,35 @@ function MemoryManager() {
 
 	this.removeProcess = function(pid) {
 		var pcb = this.getProcess(pid);
-		var index = this.processes.indexOf(pcb);
+		var index = -1;
+		for (var i = 0; i < this.processes.length; i++) {
+			if (this.processes[i] === pcb) {
+				index = i;
+				break;
+			}
+		}
 		this.processes.splice(index, 1);
 	};
 
 	this.readValue = function(location) {
+		location = modulo(location, this.partitionSize) + _CPU.base;
+		/*if (_CPU.process !== null) {
+			location += this.partitionStart(_CPU.process.partition);
+		}*/
 		return _Memory.mem[location];
 	};
 
 	this.writeValue = function(value, location) {
+		location = modulo(location, this.partitionSize) + _CPU.base;
+		/*if (_CPU.process !== null) {
+			location += this.partitionStart(_CPU.process.partition);
+		}*/
 		return _Memory.load(value, location);
+	};
+	
+	this.superWrite = function(value, location) {
+		location = modulo(location, this.memoryLimit);
+		return _Memory.mem[location];
 	};
 	
 	//returns the number of available partitions;
@@ -113,9 +134,17 @@ function MemoryManager() {
 	
 	this.clearPartition = function(part) {
 		if (part < this.partitions) {
-			_Memory.clearMemory(part * this.partitionSize, (part + 1) * this.partitionSize - 1);
+			_Memory.clearMemory(this.partitionStart(part), this.partitionEnd(part));
 			this.partitionStates[part] = 0;
 		}
 	};
+	
+	this.partitionStart = function(part) {
+		return part * this.partitionSize;
+	};
+	
+	this.partitionEnd = function(part) {
+		return (part + 1) * this.partitionSize - 1;
+	}
 
 };

@@ -143,8 +143,8 @@ function krnOnCPUClockPulse()
 		+ "X Reg \t-\t" + _CPU.Xreg + "\n"
 		+ "Y Reg \t-\t" + _CPU.Yreg + "\n"
 		+ "Z Flag\t-\t" + _CPU.Zflag + "\n\n"
-		+ "Executing: " + _CPU.isExecuting + "\n"
-		+ "Step Mode: " + _CPU.stepMode;
+		+ "Executing: " + _CPU.isExecuting + "\t\tBase:  " + _CPU.base + "\n"
+		+ "Step Mode: " + _CPU.stepMode + "\t\tLimit: " + _CPU.limit;
 
 	_CPUDisplay.value = CPUString;
 	

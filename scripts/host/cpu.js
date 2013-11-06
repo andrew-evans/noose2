@@ -19,6 +19,9 @@ function Cpu() {
     this.Xreg  = 0;     // X register
     this.Yreg  = 0;     // Y register
     this.Zflag = 0;     // Z-ero flag (Think of it as "isZero".)
+    this.base  = 0;
+    this.limit = 0;
+    
     this.isExecuting = false;
 	this.process = null;
 	this.stepMode = false;
@@ -42,6 +45,8 @@ function Cpu() {
         this.Xreg  = pcb.Xreg;
         this.Yreg  = pcb.Yreg;
         this.Zflag = pcb.Zflag;
+        this.base  = _MemoryManager.partitionStart(pcb.partition);
+        this.limit = _MemoryManager.partitionEnd(pcb.partition);
 	};
 
 	//sets up the CPU to run a given process from a control block.
@@ -49,7 +54,6 @@ function Cpu() {
 		this.process = process;
 		this.process.state = "RUNNING";
 		this.loadPCB(process);
-		this.PC = process.PC;
 		this.isExecuting = true;
 	};
 
@@ -61,7 +65,7 @@ function Cpu() {
 		this.process.state = "TERMINATED";
 
 		if (expected == true) {
-			this.process.resetCPU();
+			//this.process.resetCPU();
 			if (this.stepMode == true) {
 				_StdIn.putTextAbovePrompt("Step-thru execution completed.");
 			}
@@ -220,7 +224,7 @@ function Cpu() {
 				value = this.fetch();
 
 				if (this.Zflag == 0) {
-					this.PC = modulo(this.PC + value, _MemoryManager.memoryLimit);
+					this.PC = this.base + modulo(this.PC + value, _MemoryManager.partitionSize);
 				}
 				break;
 
@@ -230,7 +234,7 @@ function Cpu() {
 			case (0xEE):
 				address = this.getAddress();
 				value = _MemoryManager.readValue(address);
-				value = modulo(value + 1, _MemoryManager.memoryLimit);
+				value = modulo(value + 1, _MemoryManager.wordSize);
 				_MemoryManager.writeValue(value, address);
 				break;
 
@@ -261,7 +265,8 @@ function Cpu() {
 			default:
 				//give the user the relative last PC location
 				//this will be the location in the program itself, not the location in memory!
-				_StdIn.putTextAbovePrompt("Invalid op code " + instr.toString(16).toUpperCase() + " reached at line " + (this.lastPC - this.process.location + 1) + ".");
+				_StdIn.putTextAbovePrompt("Invalid op code " + instr.toString(16).toUpperCase()
+					+ " reached at line " + (this.lastPC - this.process.location + 1) + ".");
 				this.terminate(false);
 				break;
 		}

@@ -154,7 +154,7 @@ function krnOnCPUClockPulse()
 		var pcb = _MemoryManager.processes[i];
 		readyString += "PID: " + pcb.pid + 
 				" - " + pcb.state +
-				"\t\tLen: " + pcb.len +
+				"\tLen: " + pcb.len +
 				"\tPart: " + pcb.partition +
 				"\tPC: " + pcb.PC +
 				"\tAcc: " + pcb.Acc + "\n";
