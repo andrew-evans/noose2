@@ -32,14 +32,14 @@ function MemoryManager() {
 		
 		var pcb = new PCB();
 		var part = -1;
-		var partitionsNeeded = Math.floor(opCodes.length / this.partitionSize);
+		var partitionsNeeded = Math.ceil(opCodes.length / this.partitionSize);
 		
 		//TODO: fix this and the following for loop so we can handle larger programs
 		if (partitionsNeeded > 1) {
 			return null;
 		}
 		
-		if (this.partitionsAvailable() >= partitionsNeeded) {
+		if (this.partitions - this.partitionsFilled() >= partitionsNeeded) {
 			for (var j = 0; j < this.partitions; j += 1) {
 				if (this.partitionStates[j] == 0) {
 					part = j;
@@ -50,8 +50,8 @@ function MemoryManager() {
 		else {
 			_StdIn.putText("Insufficient memory to load program.");
 		}
-		
-		var location = this.partitionSize * pcb.partition;
+				
+		var location = this.partitionSize * part;
 		var currentLocation = location;
 
 		while (i < opCodes.length) {
@@ -74,7 +74,7 @@ function MemoryManager() {
 		var pcb = this.getProcess(pid);
 		pcb.state = "TERMINATED";
 		this.clearPartition(pcb.partition);
-		//TODO
+		this.removeProcess(pid);
 	};
 
 	this.getProcess = function(pid) {
@@ -88,7 +88,9 @@ function MemoryManager() {
 	};
 
 	this.removeProcess = function(pid) {
-		//TODO
+		var pcb = this.getProcess(pid);
+		var index = this.processes.indexOf(pcb);
+		this.processes.splice(index, 1);
 	};
 
 	this.readValue = function(location) {
@@ -100,13 +102,13 @@ function MemoryManager() {
 	};
 	
 	//returns the number of available partitions;
-	this.partitionsAvailable = function() {
-		var available = this.partitions;
+	this.partitionsFilled = function() {
+		var filled = 0;
 		for (var i = 0; i < this.partitions; i += 1) {
-			available -= this.partitionStates[i];
+			filled += this.partitionStates[i];
 		}
 		
-		return available;
+		return filled;
 	};
 	
 	this.clearPartition = function(part) {

@@ -45,7 +45,7 @@ var _ScrollCutoff = 20;		  // Space to leave at the bottom of the canvas when sc
 var _LineHeight = 17;		  //height of a single CLI line.
 
 var _StatusBar = null;		  //Initialized in hostInit().
-var _Status = "Business Time.";		  //Current status of the OS
+var _Status = "Keys, please.";		  //Current status of the OS
 
 var _ProgramInput = null;	  //Initialized in hostInit().
 var _MemoryDisplay = null;        //Initialized in hostInit().

@@ -101,6 +101,7 @@ function CLIconsole() {
        // decided to write one function and use the term "text" to connote string or char.
        if (text !== "")
        {
+       		_DrawingContext.fillStyle = '#FFFFFF';
            // Draw the text at the current X and Y coordinates.
            _DrawingContext.drawText(this.CurrentFont, this.CurrentFontSize, this.CurrentXPosition, this.CurrentYPosition, text);
          // Move the current X position.

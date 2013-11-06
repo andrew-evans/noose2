@@ -49,6 +49,7 @@ function Cpu() {
 		this.process = process;
 		this.process.state = "RUNNING";
 		this.loadPCB(process);
+		this.PC = process.PC;
 		this.isExecuting = true;
 	};
 

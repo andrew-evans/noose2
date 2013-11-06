@@ -1,7 +1,7 @@
 /* noose.css */
 
 body {
-   background: #909193 url(images/business-cat.jpg) repeat;
+   background: #909193 url(images/keyboard-cat-blue2.png) repeat;
 	color: white;
    font-family: Trebuchet, sans-serif;
 	font-size: 14pt;
@@ -32,7 +32,7 @@ h3 {
 }
 
 #display {
-	background-color:#DFDBC3;
+	/*background-color:#DFDBC3;*/
 	border: 2px solid red; 
 	cursor: default;
 }
@@ -46,6 +46,14 @@ h3 {
 }
 
 #taCPU {
+	background-color: #333333;
+	color: white;
+	font-family: Courier New, serif, monospace;
+	font-size: 10pt;
+	font-style: bold;
+}
+
+#taReady {
 	background-color: #333333;
 	color: white;
 	font-family: Courier New, serif, monospace;

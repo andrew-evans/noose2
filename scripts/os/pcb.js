@@ -34,6 +34,7 @@ function PCB() {
 		this.len = len;
 		this.locationEnd = location + len - 1;
 		this.partition = partition;
+		this.PC = partition * _MemoryManager.partitionSize;
 	};
 
 	this.saveCPU = function() {

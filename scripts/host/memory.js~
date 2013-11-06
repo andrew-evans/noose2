@@ -6,7 +6,7 @@
 
 function Memory() {
 
-	this.memoryLimit = 256;
+	this.memoryLimit = 1024;
 	this.wordSize = 256;
 	this.mem = [];
 

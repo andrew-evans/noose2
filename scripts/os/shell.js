@@ -381,7 +381,7 @@ function shellLoad(args)
 {
 	//Check that all characters are either hex digits or whitespace.
 	var pattern = /^(\d|[a-f]|\s)+$/i;
-	krnTrace(_ProgramInput.value);
+	krnTrace("loading program: " + _ProgramInput.value);
 	var programValid = pattern.test(_ProgramInput.value);
 	
 	//Call the memory manager to load the program into main memory.
@@ -595,14 +595,14 @@ function shellBSOD(args)
 	var image = new Image();
 	image.src = "images/upset-cat.png";
 	image.onload = function() {
-		_DrawingContext.drawImage(image, 0, 50);
+		_DrawingContext.drawImage(image, 0, 0);
 	};
 
 	_DrawingContext.fillStyle = '#0000FF';
 	_DrawingContext.fillRect(0,0, _Canvas.width, _Canvas.height);
 	_DrawingContext.fillStyle = "white";
   	_DrawingContext.font = "bold 32px Trebuchet";
-  	_DrawingContext.fillText("why would you do that :(", 30, _Canvas.height * 0.8);
+  	_DrawingContext.fillText("why would you do that :(", 30, _Canvas.height * 0.95);
 	krnShutdown();
 	clearInterval(_hardwareClockID);
 }

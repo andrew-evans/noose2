@@ -98,7 +98,7 @@ function krnOnCPUClockPulse()
 	var date = new Date();
 
 	_StatusBar.getContext('2d').clearRect(0,0,_StatusBar.width,_StatusBar.height);
-	_StatusBar.getContext('2d').fillStyle = '#FFFFFF';
+	_StatusBar.getContext('2d').fillStyle = '#00FFFF';
 	_StatusBar.getContext('2d').font = "bold 24px Courier New";
 	_StatusBar.getContext('2d').fillText(date.toLocaleDateString() + ", " + date.toLocaleTimeString(), 5, 22);
 	_StatusBar.getContext('2d').fillText("Status: " + _Status, 1000, 22);
@@ -151,7 +151,13 @@ function krnOnCPUClockPulse()
 	
 	var readyString = "";
 	for (var i = 0; i < _MemoryManager.processes.length; i += 1) {
-		readyString += "PID: " + _MemoryManager.processes[i].pid + "\n";
+		var pcb = _MemoryManager.processes[i];
+		readyString += "PID: " + pcb.pid + 
+				" - " + pcb.state +
+				"\tLen: " + pcb.len +
+				"\tPart: " + pcb.partition +
+				"\tPC: " + pcb.PC +
+				"\tAcc: " + pcb.Acc + "\n";
 	}
 	
 	_ReadyQueueDisplay.value = readyString;
