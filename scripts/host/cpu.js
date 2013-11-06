@@ -47,13 +47,15 @@ function Cpu() {
         this.Zflag = pcb.Zflag;
         this.base  = _MemoryManager.partitionStart(pcb.partition);
         this.limit = _MemoryManager.partitionEnd(pcb.partition);
+        this.process = pcb;
 	};
 
 	//sets up the CPU to run a given process from a control block.
-	this.run = function(process) {
-		this.process = process;
+	this.run = function(pcb) {
+		this.process = pcb;
 		this.process.state = "RUNNING";
-		this.loadPCB(process);
+		this.loadPCB(pcb);
+		//_MemoryManager.readyQueue.push(process);
 		this.isExecuting = true;
 	};
 
@@ -61,8 +63,7 @@ function Cpu() {
 	this.terminate = function(expected) {
 		this.isExecuting = false;
 
-		//update the PCB
-		this.process.state = "TERMINATED";
+		//this.process.state = "TERMINATED";
 
 		if (expected == true) {
 			//this.process.resetCPU();
@@ -72,8 +73,10 @@ function Cpu() {
 		}
 		else {
 			_StdIn.putTextAbovePrompt("Program " + this.process.pid + " execution ended unexpectedly.");
-			this.process.saveCPU();
+			//this.process.saveCPU();
 		}
+		
+		_MemoryManager.endProcess(this.process.pid);
 
 		//The process ended somehow, so we turn off step mode.
 		this.stepMode = false;
@@ -266,7 +269,7 @@ function Cpu() {
 				//give the user the relative last PC location
 				//this will be the location in the program itself, not the location in memory!
 				_StdIn.putTextAbovePrompt("Invalid op code " + instr.toString(16).toUpperCase()
-					+ " reached at line " + (this.lastPC - this.process.location + 1) + ".");
+					+ " reached at line " + (this.lastPC - this.base + 1) + ".");
 				this.terminate(false);
 				break;
 		}

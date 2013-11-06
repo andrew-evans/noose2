@@ -21,6 +21,9 @@ var TIMER_IRQ = 0;  // Pages 23 (timer), 9 (interrupts), and 561 (interrupt prio
                     // NOTE: The timer is different from hardware/host clock pulses. Don't confuse these.
 var KEYBOARD_IRQ = 1;  
 
+var CONTEXT_SWITCH_IRQ = 2;
+//var PROCESS_READY_IRQ = 3;
+
 
 //
 // Global Variables
@@ -28,8 +31,7 @@ var KEYBOARD_IRQ = 1;
 var _CPU = null;
 var _Memory = null;
 var _MemoryManager = null;
-
-var _Quantum = 6;		//clock tick amount for round robin scheduling;
+var _CpuScheduler = null;
 
 var _OSclock = 0;       // Page 23.
 

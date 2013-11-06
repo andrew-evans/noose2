@@ -97,6 +97,9 @@ function hostBtnStartOS_click(btn)
 
 	_MemoryManager = new MemoryManager();
 	_MemoryManager.init();
+	
+	_CpuScheduler = new CpuScheduler();
+	_CpuScheduler.init();
 
     // ... then set the host clock pulse ...
     _hardwareClockID = setInterval(hostClockPulse, CPU_CLOCK_INTERVAL);

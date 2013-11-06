@@ -93,6 +93,8 @@ function krnOnCPUClockPulse()
     {
        krnTrace("Idle");
     }
+    
+    _CpuScheduler.step();
 
 	// Update the status bar
 	var date = new Date();
@@ -126,8 +128,13 @@ function krnOnCPUClockPulse()
 		}
 	}
 	else {
+		var PCstring = "";
 		for (var i = 0; i < _Memory.memoryLimit; i++) {
-			memoryString += zeroPad(_Memory.mem[i].toString(16), 2) + " ";
+			if (_CPU.PC == i && (_CPU.isExecuting == true || _CPU.stepMode == true))
+				PCstring = "*";
+			else
+				PCstring = " ";
+			memoryString += PCstring + "" + zeroPad(_Memory.mem[i].toString(16), 2);
 			if (modulo(i + 1, 16) == 0) {
 				memoryString += "\n";
 			}
@@ -143,15 +150,15 @@ function krnOnCPUClockPulse()
 		+ "X Reg \t-\t" + _CPU.Xreg + "\n"
 		+ "Y Reg \t-\t" + _CPU.Yreg + "\n"
 		+ "Z Flag\t-\t" + _CPU.Zflag + "\n\n"
-		+ "Executing: " + _CPU.isExecuting + "\n"
-		+ "Step Mode: " + _CPU.stepMode;
+		+ "Executing:  " + _CPU.isExecuting + "\t\tBase:  " + _CPU.base + "\n"
+		+ "Step Mode:  " + _CPU.stepMode + "\t\tLimit: " + _CPU.limit;
 
 	_CPUDisplay.value = CPUString;
 	
 	
 	var readyString = "";
 	for (var i = 0; i < _MemoryManager.processes.length; i += 1) {
-		var pcb = _MemoryManager.processes[i];
+		var pcb = _MemoryManager.readyQueue[i];
 		readyString += "PID: " + pcb.pid + 
 				" - " + pcb.state +
 				"\tLen: " + pcb.len +
@@ -199,6 +206,13 @@ function krnInterruptHandler(irq, params)    // This is the Interrupt Handler Ro
             krnKeyboardDriver.isr(params);   // Kernel mode device driver
             _StdIn.handleInput();
             break;
+        case CONTEXT_SWITCH_IRQ:
+        	_CpuScheduler.contextSwitch(params);
+        	break;
+        /*case PROCESS_READY_IRQ:
+        	if (!_CPU.isExecuting) {
+        		_CPU.run(MemoryManager
+        	}*/
         default: 
             krnTrapError("Invalid Interrupt Request. irq=" + irq + " params=[" + params + "]");
     }

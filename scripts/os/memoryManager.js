@@ -19,6 +19,7 @@ function MemoryManager() {
 	this.partitionStates = [];
 	
 	this.processes = [];
+	this.readyQueue = [];
 	this.pid = 0;
 
 	this.init = function() {
@@ -99,6 +100,19 @@ function MemoryManager() {
 			}
 		}
 		this.processes.splice(index, 1);
+		
+		index = -1;
+		for (var i = 0; i < this.readyQueue.length; i++) {
+			if (this.readyQueue[i] === pcb) {
+				index = i;
+				break;
+			}
+		}
+		this.readyQueue.splice(index, 1);
+		
+		if (this.readyQueue.length > 0) {
+			_KernelInterruptQueue.enqueue(new Interrupt(CONTEXT_SWITCH_IRQ, []));
+		}
 	};
 
 	this.readValue = function(location) {
@@ -145,6 +159,37 @@ function MemoryManager() {
 	
 	this.partitionEnd = function(part) {
 		return (part + 1) * this.partitionSize - 1;
-	}
+	};
+	
+	/*this.programsRunning = function() {
+		var total = 0;
+		for (var i = 0; i < this.processes.length; i++) {
+			if (this.processes[i].state === "RUNNING" ||
+				this.processes[i].state === "WAITING" ||
+				this.processes[i].state === "READY") {
+					total += 1;
+			}
+		}
+		
+		return total;
+	};*/
+	
+	this.enqueue = function(process) {
+		process.state = "READY";
+		this.readyQueue.push(process);
+		//Interrupt(PROCESS_READY_IRQ, []);
+	};
+	
+	this.enqueueAll = function() {
+		var foundAny = false;
+		for (var i = 0; i < this.processes.length; i++) {
+			if (this.processes[i].state === "NEW") {
+				this.enqueue(this.processes[i]);
+				foundAny = true;
+			}
+		}
+		
+		return foundAny;
+	};
 
 };

@@ -51,6 +51,13 @@ function shellInit() {
     sc.description = "<pid> - Runs a program from memory.";
     sc.function = shellRun;
     this.commandList[this.commandList.length] = sc;
+    
+    // runall
+    sc = new ShellCommand();
+    sc.command = "runall";
+    sc.description = "- Runs all programs in memory.";
+    sc.function = shellRunall;
+    this.commandList[this.commandList.length] = sc;
 
 	// step
     sc = new ShellCommand();
@@ -381,7 +388,7 @@ function shellLoad(args)
 {
 	//Check that all characters are either hex digits or whitespace.
 	var pattern = /^(\d|[a-f]|\s)+$/i;
-	krnTrace(_ProgramInput.value);
+	krnTrace("loading program: " + _ProgramInput.value);
 	var programValid = pattern.test(_ProgramInput.value);
 	
 	//Call the memory manager to load the program into main memory.
@@ -424,7 +431,8 @@ function shellRunGeneric(args)
 		var process = _MemoryManager.getProcess(parseInt(args[0]));
 		if (process !== null) {
 			krnTrace("Found program PID " + process.pid + " at location " + process.location);
-			_CPU.run(process);
+			_MemoryManager.enqueue(process);
+			//_CPU.run(process);
 			return true;
 		}
 		else {
@@ -435,6 +443,12 @@ function shellRunGeneric(args)
 	else {
 		_StdIn.putText("Please supply a PID as an argument.");
 		return false;
+	}
+}
+
+function shellRunall(args) {
+	if (!_MemoryManager.enqueueAll()) {
+		_StdIn.putText("There are no new processes to run.");
 	}
 }
 
@@ -513,7 +527,7 @@ function shellQuantum(args)
 	if (args.length > 0) {
 		var value = parseInt(args[1]);
 		if (value > 0) {
-			_Quantum = value;
+			_CpuScheduler.quantum = value;
 		}
 		else {
 			_StdIn.putText("Please enter a positive number.");

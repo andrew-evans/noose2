@@ -20,7 +20,8 @@
    <!-- Virtual OS Routines: Make sure Kernel code is last, since it needs those above it. -->
    <script type="text/javascript" src="scripts/os/interrupt.js"></script>
    <script type="text/javascript" src="scripts/os/canvastext.js"></script>	
-   <script type="text/javascript" src="scripts/os/console.js"></script>	
+   <script type="text/javascript" src="scripts/os/console.js"></script>
+   <script type="text/javascript" src="scripts/os/cpuScheduler.js"></script>	
    <script type="text/javascript" src="scripts/os/deviceDriver.js"></script>
    <script type="text/javascript" src="scripts/os/deviceDriverKeyboard.js"></script>
    <script type="text/javascript" src="scripts/os/queue.js"></script>
@@ -31,7 +32,7 @@
 
    <!-- Other Routines -->
    <script type="text/javascript" src="scripts/utils.js"></script>
-   <!--<script type="text/javascript" src="http://www.labouseur.com/courses/os/projects/glados.js"></script>-->
+   <script type="text/javascript" src="http://www.labouseur.com/courses/os/projects/glados.js"></script>
 </head>
 
 <body onload="hostInit();">
@@ -143,7 +144,7 @@
 	  <td style="padding:8px">
 	   <div id="divReadyQueue">
 		  <label>
-		     Ready Queue
+		     Processes in Memory
 		     <br>
 		     <textarea name="taReady"
 		               id  ="taReady"
