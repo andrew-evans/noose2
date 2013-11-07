@@ -157,7 +157,7 @@ function krnOnCPUClockPulse()
 	
 	
 	var readyString = "";
-	for (var i = 0; i < _MemoryManager.processes.length; i += 1) {
+	for (var i = 0; i < _MemoryManager.readyQueue.length; i += 1) {
 		var pcb = _MemoryManager.readyQueue[i];
 		readyString += "PID: " + pcb.pid + 
 				" - " + pcb.state +

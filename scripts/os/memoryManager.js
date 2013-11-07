@@ -51,7 +51,7 @@ function MemoryManager() {
 			}
 		}
 		else {
-			_StdIn.putText("Insufficient memory to load program.");
+			return null;
 		}
 				
 		var location = this.partitionSize * part;
