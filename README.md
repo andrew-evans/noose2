@@ -1,5 +1,5 @@
-AlanBBOS2013
+noOSe
+Andrew Evans
 ============
 
-This is my Fall 2013 Operating Systems class initial project.
-See http://www.labouseur.com/courses/os/ for details.
+This is my Fall 2013 Operating Systems class as of assignment 3!
