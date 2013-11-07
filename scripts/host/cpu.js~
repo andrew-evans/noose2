@@ -269,7 +269,7 @@ function Cpu() {
 				//give the user the relative last PC location
 				//this will be the location in the program itself, not the location in memory!
 				_StdIn.putTextAbovePrompt("Invalid op code " + instr.toString(16).toUpperCase()
-					+ " reached at line " + (this.lastPC - this.process.location + 1) + ".");
+					+ " reached at line " + (this.lastPC - this.base + 1) + ".");
 				this.terminate(false);
 				break;
 		}

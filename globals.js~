@@ -22,7 +22,7 @@ var TIMER_IRQ = 0;  // Pages 23 (timer), 9 (interrupts), and 561 (interrupt prio
 var KEYBOARD_IRQ = 1;  
 
 var CONTEXT_SWITCH_IRQ = 2;
-var PROCESS_READY_IRQ = 3;
+//var PROCESS_READY_IRQ = 3;
 
 
 //

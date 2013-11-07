@@ -161,19 +161,6 @@ function MemoryManager() {
 		return (part + 1) * this.partitionSize - 1;
 	};
 	
-	/*this.programsRunning = function() {
-		var total = 0;
-		for (var i = 0; i < this.processes.length; i++) {
-			if (this.processes[i].state === "RUNNING" ||
-				this.processes[i].state === "WAITING" ||
-				this.processes[i].state === "READY") {
-					total += 1;
-			}
-		}
-		
-		return total;
-	};*/
-	
 	this.enqueue = function(process) {
 		process.state = "READY";
 		this.readyQueue.push(process);

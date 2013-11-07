@@ -103,7 +103,7 @@ function MemoryManager() {
 		
 		index = -1;
 		for (var i = 0; i < this.readyQueue.length; i++) {
-			if (this.processes[i] === pcb) {
+			if (this.readyQueue[i] === pcb) {
 				index = i;
 				break;
 			}

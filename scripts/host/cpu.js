@@ -77,9 +77,6 @@ function Cpu() {
 		}
 		
 		_MemoryManager.endProcess(this.process.pid);
-
-		//The process ended somehow, so we turn off step mode.
-		this.stepMode = false;
 		
 	};
     

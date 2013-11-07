@@ -10,8 +10,6 @@ function Shell() {
     // Properties
     this.promptStr   = ">";
     this.commandList = [];
-    this.curses      = "[fuvg],[cvff],[shpx],[phag],[pbpxfhpxre],[zbgureshpxre],[gvgf]";
-    this.apologies   = "[sorry]";
     // Methods
     this.init        = shellInit;
     this.putPrompt   = shellPutPrompt;
@@ -58,11 +56,18 @@ function shellInit() {
     sc.description = "- Runs all programs in memory.";
     sc.function = shellRunall;
     this.commandList[this.commandList.length] = sc;
+    
+    // active
+    sc = new ShellCommand();
+    sc.command = "active";
+    sc.description = "- Displays PIDs of all active processes.";
+    sc.function = shellActive;
+    this.commandList[this.commandList.length] = sc;
 
 	// step
     sc = new ShellCommand();
     sc.command = "step";
-    sc.description = "<pid> - Runs a program in step-thru mode.";
+    sc.description = "- Toggles step-thru execution.";
     sc.function = shellStep;
     this.commandList[this.commandList.length] = sc;
 
@@ -213,19 +218,7 @@ function shellHandleInput(buffer)
     }
     else
     {
-        // It's not found, so check for curses and apologies before declaring the command invalid.
-        if (this.curses.indexOf("[" + rot13(cmd) + "]") >= 0)      // Check for curses.
-        {
-            this.execute(shellCurse);
-        }
-        else if (this.apologies.indexOf("[" + cmd + "]") >= 0)      // Check for apologies.
-        {
-            this.execute(shellApology);
-        }
-        else    // It's just a bad command.
-        {
-            this.execute(shellInvalidCommand);
-        }
+        this.execute(shellInvalidCommand);
     }
 }
 
@@ -308,35 +301,7 @@ function UserCommand()
 //
 function shellInvalidCommand()
 {
-    _StdIn.putText("Invalid Command. ");
-    if (_SarcasticMode)
-    {
-        _StdIn.putText("Duh. Go back to your Speak & Spell.");
-    }
-    else
-    {
-        _StdIn.putText("Type 'help' for, well... help.");
-    }
-}
-
-function shellCurse()
-{
-    _StdIn.putText("Oh, so that's how it's going to be, eh? Fine.");
-    _StdIn.advanceLine();
-    _StdIn.putText("Bitch.");
-    _SarcasticMode = true;
-	_Status = "Fuck off.";
-}
-
-function shellApology()
-{
-   if (_SarcasticMode) {
-      _StdIn.putText("Okay. I forgive you. This time.");
-      _SarcasticMode = false;
-	  _Status = "OK";
-   } else {
-      _StdIn.putText("For what?");
-   }
+    _StdIn.putText("Invalid Command. Type 'help' for, well... help.");
 }
 
 function shellNoose(args)
@@ -412,21 +377,7 @@ function shellLoad(args)
 
 function shellRun(args)
 {
-	_CPU.stepMode = false;
-	shellRunGeneric(args);
-}
-
-function shellStep(args)
-{
-	_CPU.stepMode = true;
-	if (shellRunGeneric(args)) {
-		_StdIn.putText("Press PAUSE/BREAK to step forward in program execution.");
-	}
-}
-
-//Handles running programs after the run or step command sets the step mode.
-function shellRunGeneric(args)
-{
+	//_CPU.stepMode = false;
 	if (args.length > 0) {
 		var process = _MemoryManager.getProcess(parseInt(args[0]));
 		if (process !== null) {
@@ -446,9 +397,32 @@ function shellRunGeneric(args)
 	}
 }
 
+function shellStep(args)
+{
+	_CPU.stepMode = !_CPU.stepMode;
+	if (_CPU.stepMode) {
+		_StdIn.putText("Press PAUSE/BREAK to step forward in program execution.");
+	}
+	else {
+		_StdIn.putText("Step-thru execution disabled.");
+	}
+}
+
 function shellRunall(args) {
 	if (!_MemoryManager.enqueueAll()) {
 		_StdIn.putText("There are no new processes to run.");
+	}
+}
+
+function shellActive(args) {
+	if (_MemoryManager.processes.length > 0) {
+		_StdIn.putText("Active PIDs:");
+		for (var i = 0; i < _MemoryManager.processes.length; i += 1) {
+			_StdIn.putText(" " + _MemoryManager.processes[i].pid);
+		}
+	}
+	else {
+		_StdIn.putText("No active processes are currently in memory.");
 	}
 }
 
