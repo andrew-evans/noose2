@@ -378,13 +378,19 @@ function shellLoad(args)
 function shellRun(args)
 {
 	//_CPU.stepMode = false;
+	var pid = parseInt(args[0]);
 	if (args.length > 0) {
-		var process = _MemoryManager.getProcess(parseInt(args[0]));
+		var process = _MemoryManager.getProcess(pid);
 		if (process !== null) {
-			krnTrace("Found program PID " + process.pid + " at location " + process.location);
-			_MemoryManager.enqueue(process);
-			//_CPU.run(process);
-			return true;
+			if (!_MemoryManager.runningProcess(pid)) {
+				krnTrace("Running program PID " + process.pid + "...");
+				_MemoryManager.enqueue(process);
+				//_CPU.run(process);
+				return true;
+			}
+			else {
+				_StdIn.putText("Process " + pid + " is already running.");
+			}
 		}
 		else {
 			_StdIn.putText("No program with PID " + args[0] + " exists in memory.");

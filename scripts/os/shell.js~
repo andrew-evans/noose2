@@ -408,29 +408,6 @@ function shellStep(args)
 	}
 }
 
-//Handles running programs after the run or step command sets the step mode.
-//legacy function; TODO: delete
-function shellRunGeneric(args)
-{
-	if (args.length > 0) {
-		var process = _MemoryManager.getProcess(parseInt(args[0]));
-		if (process !== null) {
-			krnTrace("Found program PID " + process.pid + " at location " + process.location);
-			_MemoryManager.enqueue(process);
-			//_CPU.run(process);
-			return true;
-		}
-		else {
-			_StdIn.putText("No program with PID " + args[0] + " exists in memory.");
-			return false;
-		}
-	}
-	else {
-		_StdIn.putText("Please supply a PID as an argument.");
-		return false;
-	}
-}
-
 function shellRunall(args) {
 	if (!_MemoryManager.enqueueAll()) {
 		_StdIn.putText("There are no new processes to run.");

@@ -51,8 +51,6 @@ function MemoryManager() {
 			}
 		}
 		else {
-			_StdIn.putText("Insufficient memory to load program.");
-			_StdIn.AdvanceLine();
 			return null;
 		}
 				

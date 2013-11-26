@@ -15,11 +15,11 @@ var APP_NAME = "noOSe";
 var APP_VERSION = "0.3 - keyboard cat";
 var APP_DESCRIPTION = "Notably Optimistic Operating System for Enjoyment!"
 
-var CPU_CLOCK_INTERVAL = 100;   // This is in ms, or milliseconds, so 1000 = 1 second.
+var CPU_CLOCK_INTERVAL = 50;   // This is in ms, or milliseconds, so 1000 = 1 second.
 
 var TIMER_IRQ = 0;  // Pages 23 (timer), 9 (interrupts), and 561 (interrupt priority).
                     // NOTE: The timer is different from hardware/host clock pulses. Don't confuse these.
-var KEYBOARD_IRQ = 1;  
+var KEYBOARD_IRQ = 1;
 
 var CONTEXT_SWITCH_IRQ = 2;
 //var PROCESS_READY_IRQ = 3;

@@ -89,6 +89,16 @@ function MemoryManager() {
 		
 		return null;
 	};
+	
+	this.runningProcess = function(pid) {
+		for (var i = 0; i < this.readyQueue.length; i++) {
+			if (this.readyQueue[i].pid == pid) {
+				return true;
+			}
+		}
+		
+		return false;
+	}
 
 	this.removeProcess = function(pid) {
 		var pcb = this.getProcess(pid);

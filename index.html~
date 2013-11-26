@@ -37,9 +37,9 @@
 
 <body onload="hostInit();">
 
-<div id="divMain" style="width:100%;">
+<div id="divMain" style="width:100%; align:center;">
 
-   <div id="divButtonBar" style="margin:4px;">
+   <div id="divButtonBar" style="margin:4px; align:left;">
       <input type="button"
              id = "btnStartOS"
              name="brnStartOS"
@@ -144,7 +144,7 @@
 	  <td style="padding:8px">
 	   <div id="divReadyQueue">
 		  <label>
-		     Processes in Memory
+		     Ready Queue
 		     <br>
 		     <textarea name="taReady"
 		               id  ="taReady"

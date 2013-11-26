@@ -6,7 +6,7 @@
 
 function CpuScheduler() {
 
-	this.quantum = 6;	//clock ticks per round robin cycle
+	this.quantum = 7;	//clock ticks per round robin cycle
 	this.count = 0;
 	//this.isr = this.contextSwitch;
 
@@ -19,7 +19,7 @@ function CpuScheduler() {
 			_KernelInterruptQueue.enqueue(new Interrupt(CONTEXT_SWITCH_IRQ, []));
 		}
 		
-		if (_CPU.isExecuting) {
+		if (_CPU.isExecuting || !_CPU.stepMode) {
 			this.count = modulo(this.count + 1, this.quantum);
 		}
 		

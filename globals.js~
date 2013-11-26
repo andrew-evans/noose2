@@ -15,7 +15,7 @@ var APP_NAME = "noOSe";
 var APP_VERSION = "0.3 - keyboard cat";
 var APP_DESCRIPTION = "Notably Optimistic Operating System for Enjoyment!"
 
-var CPU_CLOCK_INTERVAL = 100;   // This is in ms, or milliseconds, so 1000 = 1 second.
+var CPU_CLOCK_INTERVAL = 50;   // This is in ms, or milliseconds, so 1000 = 1 second.
 
 var TIMER_IRQ = 0;  // Pages 23 (timer), 9 (interrupts), and 561 (interrupt priority).
                     // NOTE: The timer is different from hardware/host clock pulses. Don't confuse these.
@@ -71,9 +71,6 @@ var _StdOut = null;
 // UI
 var _Console = null;
 var _OsShell = null;
-
-// At least this OS is not trying to kill you. (Yet.)
-var _SarcasticMode = false;
 
 // Global Device Driver Objects - page 12
 var krnKeyboardDriver = null;
