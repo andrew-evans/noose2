@@ -6,8 +6,14 @@
 
 function CpuScheduler() {
 
-	this.quantum = 6;	//clock ticks per round robin cycle
+	this.setQuantum = 6;
+	this.quantum = this.setQuantum;	//clock ticks per round robin cycle
 	this.count = 0;
+	this.mode = "RR";
+	//RR - round robin
+	//FCFS - first come first served
+	//PR - non-preemptive priority
+	
 	//this.isr = this.contextSwitch;
 
 	this.init = function() {
@@ -15,6 +21,13 @@ function CpuScheduler() {
 	};
 
 	this.step = function() {
+		if (this.mode === "RR") {
+			this.quantum = this.setQuantum;
+		}
+		else {
+			this.quantum = 999999;
+		}
+	
 		if (_MemoryManager.readyQueue.length > 0 && !_CPU.isExecuting && !_CPU.stepMode) {
 			_KernelInterruptQueue.enqueue(new Interrupt(CONTEXT_SWITCH_IRQ, []));
 		}
@@ -31,6 +44,21 @@ function CpuScheduler() {
 	this.contextSwitch = function() {
 		var current = _MemoryManager.readyQueue.shift();
 		_MemoryManager.enqueue(current);
+		
+		if (this.mode === "PR") {
+			var pcb = null;
+			var lowest = 999999;
+			index = 0;
+			for (var i = 0; i < _MemoryManager.readyQueue.length; i++) {
+				if (_MemoryManager.readyQueue[i].priority < lowest) {
+					index = i;
+				}
+			}
+			pcb = _MemoryManager.readyQueue[index];
+			_MemoryManager.readyQueue.splice(index, 1);
+			_MemoryManager.enqueue(pcb);
+		}
+		
 		var next = _MemoryManager.readyQueue[0];
 		if (_CPU.isExecuting) {
 			current.saveCPU();

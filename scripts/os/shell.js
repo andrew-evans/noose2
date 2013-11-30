@@ -39,7 +39,7 @@ function shellInit() {
 	// load
     sc = new ShellCommand();
     sc.command = "load";
-    sc.description = "- Loads a program from the program input.";
+    sc.description = "<priority> - Loads a program from the program input.";
     sc.function = shellLoad;
     this.commandList[this.commandList.length] = sc;
 
@@ -132,6 +132,13 @@ function shellInit() {
     sc.command = "quantum";
     sc.description = "<clock ticks> - Sets the round robin scheduling quantum.";
     sc.function = shellQuantum;
+    this.commandList[this.commandList.length] = sc;
+
+    // setschedule <type>
+    sc = new ShellCommand();
+    sc.command = "setschedule";
+    sc.description = "<type> - Sets the round robin scheduling algorithm.";
+    sc.function = shellSetSchedule;
     this.commandList[this.commandList.length] = sc;
 
     // rot13 <string>
@@ -353,13 +360,19 @@ function shellLoad(args)
 {
 	//Check that all characters are either hex digits or whitespace.
 	var pattern = /^(\d|[a-f]|\s)+$/i;
-	krnTrace("loading program: " + _ProgramInput.value);
+	//krnTrace("loading program: " + _ProgramInput.value);
 	var programValid = pattern.test(_ProgramInput.value);
 	
 	//Call the memory manager to load the program into main memory.
 	if (programValid)
 	{
-		var pcb = _MemoryManager.loadProgram(_ProgramInput.value);
+		var priority = 5;
+		if (args.length > 0) {
+			priority = Math.abs(parseInt(args[0]));
+		}
+		
+		var pcb = _MemoryManager.loadProgram(_ProgramInput.value, priority);
+		
 		if (pcb !== null)
 		{
 			_StdIn.putText("Program successfully loaded with PID " + pcb.pid);
@@ -507,7 +520,7 @@ function shellQuantum(args)
 	if (args.length > 0) {
 		var value = parseInt(args[0]);
 		if (value > 0) {
-			_CpuScheduler.quantum = value;
+			_CpuScheduler.setQuantum = value;
 		}
 		else {
 			_StdIn.putText("Please enter a positive number.");
@@ -515,6 +528,32 @@ function shellQuantum(args)
 	}
 	else {
 		_StdIn.putText("Please supply a quantum number as an argument.");
+	}
+}
+
+function shellSetSchedule(args)
+{
+	if (args.length > 0) {
+		if (args[0].toLowerCase() === "rr") {
+			_CpuScheduler.mode = "RR";
+			_StdIn.putText("Scheduling set to Round Robin.");
+		}
+		else if (args[0].toLowerCase() === "fcfs") {
+			_CpuScheduler.mode = "FCFS";
+			_StdIn.putText("Scheduling set to First Come First Served.");
+		}
+		else if (args[0].toLowerCase() === "priority") {
+			_CpuScheduler.mode = "PR";
+			_StdIn.putText("Scheduling set to Non-Preemptive Priority.");
+		}
+		else {
+			_StdIn.putText("Invalid scheduling algorithm.");
+		}
+	}
+	else {
+		_StdIn.putText("Please supply one of the following scheduling algorithms:");
+		_StdIn.advanceLine();
+		_StdIn.putText("  rr - fcfs - priority");
 	}
 }
 

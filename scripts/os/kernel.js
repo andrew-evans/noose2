@@ -151,7 +151,8 @@ function krnOnCPUClockPulse()
 		+ "Y Reg \t-\t" + _CPU.Yreg + "\n"
 		+ "Z Flag\t-\t" + _CPU.Zflag + "\n\n"
 		+ "Executing:  " + _CPU.isExecuting + "\t\tBase:  " + _CPU.base + "\n"
-		+ "Step Mode:  " + _CPU.stepMode + "\t\tLimit: " + _CPU.limit;
+		+ "Step Mode:  " + _CPU.stepMode + "\t\tLimit: " + _CPU.limit + "\n"
+		+ "Scheduling Algorithm: " + _CpuScheduler.mode;
 
 	_CPUDisplay.value = CPUString;
 	
@@ -161,10 +162,9 @@ function krnOnCPUClockPulse()
 		var pcb = _MemoryManager.readyQueue[i];
 		readyString += "PID: " + pcb.pid + 
 				" - " + pcb.state +
-				"\tLen: " + pcb.len +
-				"\tPart: " + pcb.partition +
-				"\tPC: " + pcb.PC +
-				"\tAcc: " + pcb.Acc + "\n";
+				"  \tP: " + pcb.priority +
+				"  \tPart: " + pcb.partition +
+				"  \tPC: " + pcb.PC + "\n";
 	}
 	
 	_ReadyQueueDisplay.value = readyString;

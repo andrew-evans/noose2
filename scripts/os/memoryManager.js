@@ -28,7 +28,7 @@ function MemoryManager() {
 		}
 	};
 
-	this.loadProgram = function(programString) {
+	this.loadProgram = function(programString, priority) {
 		var opCodes = programString.split(/\s+/);
 		var i = 0;
 		
@@ -64,7 +64,7 @@ function MemoryManager() {
 
 		//create a new PCB and pass in the necessary values
 		
-		pcb.init(this.pid, location, opCodes.length, part);
+		pcb.init(this.pid, location, opCodes.length, part, priority);
 		this.processes.push(pcb);
 		this.pid++;
 		
@@ -75,9 +75,11 @@ function MemoryManager() {
 
 	this.endProcess = function(pid) {
 		var pcb = this.getProcess(pid);
-		pcb.state = "TERMINATED";
-		this.clearPartition(pcb.partition);
-		this.removeProcess(pid);
+		if (pcb !== null) {
+			pcb.state = "TERMINATED";
+			this.clearPartition(pcb.partition);
+			this.removeProcess(pid);
+		}
 	};
 
 	this.getProcess = function(pid) {
