@@ -12,7 +12,7 @@
 // Global CONSTANTS
 //
 var APP_NAME = "noOSe";
-var APP_VERSION = "0.3 - keyboard cat";
+var APP_VERSION = "0.4 - purplecat";
 var APP_DESCRIPTION = "Notably Optimistic Operating System for Enjoyment!"
 
 var CPU_CLOCK_INTERVAL = 50;   // This is in ms, or milliseconds, so 1000 = 1 second.
@@ -22,6 +22,9 @@ var TIMER_IRQ = 0;  // Pages 23 (timer), 9 (interrupts), and 561 (interrupt prio
 var KEYBOARD_IRQ = 1;
 
 var CONTEXT_SWITCH_IRQ = 2;
+var FILE_WRITE_IRQ = 3;
+var FILE_READ_IRQ = 4;
+var FILE_FORMAT_IRQ = 5;
 //var PROCESS_READY_IRQ = 3;
 
 
@@ -47,7 +50,7 @@ var _ScrollCutoff = 20;		  // Space to leave at the bottom of the canvas when sc
 var _LineHeight = 17;		  //height of a single CLI line.
 
 var _StatusBar = null;		  //Initialized in hostInit().
-var _Status = "Keys, please.";		  //Current status of the OS
+var _Status = "PURPLE.";		  //Current status of the OS
 
 var _ProgramInput = null;	  //Initialized in hostInit().
 var _MemoryDisplay = null;        //Initialized in hostInit().
@@ -74,6 +77,7 @@ var _OsShell = null;
 
 // Global Device Driver Objects - page 12
 var krnKeyboardDriver = null;
+var krnFileSystemDriver = null;
 
 // For testing...
 var _GLaDOS = null;

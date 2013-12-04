@@ -1,7 +1,7 @@
 /* noose.css */
 
 body {
-   background: #909193 url(images/keyboard-cat-blue2.png) repeat;
+   background: #909193 url(images/purplecat2.png) repeat;
 	color: white;
    font-family: Trebuchet, sans-serif;
 	font-size: 14pt;
@@ -33,7 +33,7 @@ h3 {
 
 #display {
 	/*background-color:#DFDBC3;*/
-	border: 2px solid aqua; 
+	border: 2px solid #FF00FF; 
 	cursor: default;
 }
 

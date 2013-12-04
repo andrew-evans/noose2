@@ -35,6 +35,11 @@ function krnBootstrap()      // Page 8.
    krnKeyboardDriver = new DeviceDriverKeyboard();     // Construct it.  TODO: Should that have a _global-style name?
    krnKeyboardDriver.driverEntry();                    // Call the driverEntry() initialization routine.
    krnTrace(krnKeyboardDriver.status);
+   
+   krnTrace("Loading the file system device driver.");
+   krnFileSystemDriver = new DeviceDriverFileSystem();     // Construct it.  TODO: Should that have a _global-style name?
+   krnFileSystemDriver.driverEntry();                    // Call the driverEntry() initialization routine.
+   krnTrace(krnFileSystemDriver.status);
 
    //
    // ... more?
@@ -100,7 +105,7 @@ function krnOnCPUClockPulse()
 	var date = new Date();
 
 	_StatusBar.getContext('2d').clearRect(0,0,_StatusBar.width,_StatusBar.height);
-	_StatusBar.getContext('2d').fillStyle = '#00FFFF';
+	_StatusBar.getContext('2d').fillStyle = '#FF00FF';
 	_StatusBar.getContext('2d').font = "bold 24px Courier New";
 	_StatusBar.getContext('2d').fillText(date.toLocaleDateString() + ", " + date.toLocaleTimeString(), 5, 22);
 	_StatusBar.getContext('2d').fillText("Status: " + _Status, 1000, 22);
@@ -208,6 +213,15 @@ function krnInterruptHandler(irq, params)    // This is the Interrupt Handler Ro
             break;
         case CONTEXT_SWITCH_IRQ:
         	_CpuScheduler.contextSwitch(params);
+        	break;
+        case FILE_READ_IRQ:
+        	krnFileSystemDriver.read(params);
+        	break;
+        case FILE_WRITE_IRQ:
+        	krnFileSystemDriver.write(params);
+        	break;
+        case FILE_FORMAT_IRQ:
+        	krnFileSystemDriver.format();
         	break;
         /*case PROCESS_READY_IRQ:
         	if (!_CPU.isExecuting) {

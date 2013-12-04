@@ -37,9 +37,9 @@
 
 <body onload="hostInit();">
 
-<div id="divMain" style="width:100%; align:center;">
+<div id="divMain" style="width:100%;">
 
-   <div id="divButtonBar" style="margin:4px; align:left;">
+   <div id="divButtonBar" style="margin:4px;">
       <input type="button"
              id = "btnStartOS"
              name="brnStartOS"

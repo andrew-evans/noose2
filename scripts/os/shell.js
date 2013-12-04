@@ -35,6 +35,20 @@ function shellInit() {
     sc.description = "- Displays the current version data.";
     sc.function = shellVer;
     this.commandList[this.commandList.length] = sc;
+    
+    // create
+    sc = new ShellCommand();
+    sc.command = "create";
+    sc.description = "<filename> - Creates a new file with a given name.";
+    sc.function = shellCreate;
+    this.commandList[this.commandList.length] = sc;
+    
+    // format
+    sc = new ShellCommand();
+    sc.command = "format";
+    sc.description = "- Formats the file system drive.";
+    sc.function = shellFormat;
+    this.commandList[this.commandList.length] = sc;
 
 	// load
     sc = new ShellCommand();
@@ -139,6 +153,13 @@ function shellInit() {
     sc.command = "setschedule";
     sc.description = "<type> - Sets the round robin scheduling algorithm.";
     sc.function = shellSetSchedule;
+    this.commandList[this.commandList.length] = sc;
+    
+    // getschedule
+    sc = new ShellCommand();
+    sc.command = "getschedule";
+    sc.description = "Displays the current round robin scheduling algorithm.";
+    sc.function = shellGetSchedule;
     this.commandList[this.commandList.length] = sc;
 
     // rot13 <string>
@@ -356,6 +377,19 @@ function shellVer(args)
     _StdIn.putText(APP_NAME + " version " + APP_VERSION);
 }
 
+function shellFormat(args) {
+	_KernelInterruptQueue.enqueue(new Interrupt(FILE_FORMAT_IRQ, []));
+}
+
+function shellCreate(args) {
+	if (args.length > 0) {
+		_KernelInterruptQueue.enqueue(new Interrupt(FILE_WRITE_IRQ, [args[0], ""]));
+	}
+	else {
+		_StdIn.putText("Please supply a filename as an argument.");
+	}
+}
+
 function shellLoad(args)
 {
 	//Check that all characters are either hex digits or whitespace.
@@ -554,6 +588,19 @@ function shellSetSchedule(args)
 		_StdIn.putText("Please supply one of the following scheduling algorithms:");
 		_StdIn.advanceLine();
 		_StdIn.putText("  rr - fcfs - priority");
+	}
+}
+
+function shellGetSchedule(args)
+{
+	if (_CpuScheduler.mode === "RR") {
+		_StdIn.putText("Scheduling currently set to Round Robin.");
+	}
+	else if (_CpuScheduler.mode === "FCFS") {
+		_StdIn.putText("Scheduling currently set to First Come First Served.");
+	}
+	else if (_CpuScheduler.mode === "PR") {
+		_StdIn.putText("Scheduling currently set to Non-Preemptive Priority.");
 	}
 }
 
