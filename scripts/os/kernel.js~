@@ -220,6 +220,12 @@ function krnInterruptHandler(irq, params)    // This is the Interrupt Handler Ro
         case FILE_WRITE_IRQ:
         	krnFileSystemDriver.write(params);
         	break;
+        case FILE_FORMAT_IRQ:
+        	krnFileSystemDriver.format(params);
+        	break;
+        case FILE_REMOVE_IRQ:
+        	krnFileSystemDriver.remove(params);
+        	break;
         /*case PROCESS_READY_IRQ:
         	if (!_CPU.isExecuting) {
         		_CPU.run(MemoryManager

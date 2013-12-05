@@ -103,10 +103,30 @@ function CLIconsole() {
        {
        		_DrawingContext.fillStyle = '#FFFFFF';
            // Draw the text at the current X and Y coordinates.
-           _DrawingContext.drawText(this.CurrentFont, this.CurrentFontSize, this.CurrentXPosition, this.CurrentYPosition, text);
-         // Move the current X position.
-           var offset = _DrawingContext.measureText(this.CurrentFont, this.CurrentFontSize, text);
-           this.CurrentXPosition = this.CurrentXPosition + offset;
+           var i = 0;
+           var words = text.split(" ");
+           while (i < words.length) {
+           		var space = " ";
+           		if (i + 1 == words.length) {
+           			space = "";
+           		}
+           		var offset = _DrawingContext.measureText(this.CurrentFont, this.CurrentFontSize, words[i] + space);
+           		//we need to check if the next word will fit on the current line
+           		//but if the x position is already at a minimum, print it anyway.
+           		//this will avoid endless loops on words too large.
+           		//right now they will just be cut off.
+           		if (this.CurrentXPosition + offset < _Canvas.width - 8 || this.currentXPosition <= 0) {
+           			_DrawingContext.drawText(this.CurrentFont, this.CurrentFontSize, this.CurrentXPosition, this.CurrentYPosition, words[i] + space);
+         			// Move the current X position.
+           			this.CurrentXPosition = this.CurrentXPosition + offset;
+           		}
+           		else {
+           			this.advanceLine();
+           			i -= 1;
+           		}
+           		
+           		i += 1;
+           }
        }
     };
 

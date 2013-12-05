@@ -5,9 +5,9 @@ function DeviceDriverFileSystem() {
 	this.driverEntry = krnFileSysDriverEntry;
 	this.read = krnFileSysReadFile;
 	this.write = krnFileSysWriteFile;
+	this.remove = krnFileSysDelete;
 	this.format = krnFileSysFormat;
-	
-	this.dataStart = 100;
+	this.find = krnFileSysFind;
     //this.isr = krnKbdDispatchKeyPress;
 }
 
@@ -22,10 +22,11 @@ function krnFileSysReadFile(params) {
 	var index = fileIndex(name);
 	
 	if (index != -1) {	//file exists, read it
-		_StdIn.putText(localStorage.getItem("" + index));
+		var location = index + 1000;
+		_StdIn.putTextAbovePrompt(localStorage.getItem(location));
 	}
 	else {	//file does not exist, do something
-		
+		_StdIn.putTextAbovePrompt("No file with the name " + name + " exists.");
 	}
 }
 
@@ -37,7 +38,6 @@ function krnFileSysWriteFile(params) {
 	}
 	
 	var index = fileIndex(name);
-	//_StdIn.putTextAbovePrompt("" + index);
 	
 	if (index != -1) {	//file exists, overwrite it
 		
@@ -45,11 +45,7 @@ function krnFileSysWriteFile(params) {
 	else {	//file does not exist, create it
 		if (nameIsValid(name)) {
 			index = getNextIndex();
-			//data = "";
-			
-			/*if (index - 1 >= 0) {
-				location = parseInt(localStorage.getItem("" + (index - 1)).substring(0,3)) + 1;
-			}*/
+			_StdIn.putTextAbovePrompt("File " + name + " created.");
 		}
 		else {
 			_StdIn.putTextAbovePrompt("File names must contain only alphanumeric");
@@ -63,8 +59,22 @@ function krnFileSysWriteFile(params) {
 	localStorage.setItem(location, "" + data);
 }
 
+function krnFileSysDelete(params) {
+	var index = fileIndex(params[0]);
+	if (index != -1) {
+		var location = index + 1000;
+		localStorage.removeItem(index);
+		localStorage.removeItem(location);
+		_StdIn.putTextAbovePrompt("File deleted.");
+	}
+	else {
+		_StdIn.putTextAbovePrompt("No file with the name " + params[0] + " exists.");
+	}
+}
+
 function krnFileSysFormat(params) {
 	localStorage.clear();
+	_StdIn.putTextAbovePrompt("File drive formatted.");
 }
 
 function nameIsValid(name) {
@@ -84,20 +94,43 @@ function getNextIndex() {
 		index += 1;
 	}
 	
+	if (index >= 1000) {
+		//ideally, we should do something more here.
+		return -1;
+	}
+	
 	return index;
 }
 
 function fileIndex(name) {
 	var index = 0;
-	var s = "" + index;
 	
-	while (localStorage.getItem(index) !== null) {
-		if (localStorage.getItem(index).substring(5) === name) {
-			return index;
+	while (index < 1000) {
+		if (localStorage.getItem(index) !== null) {
+			if ("" + localStorage.getItem(index).substring(5) === name) {
+				return index;
+			}
 		}
 		index += 1;
-		s = "" + index;
 	}
 	
 	return -1;
+}
+
+function krnFileSysFind(params) {
+	var index = 0;
+	var fileString = "";
+	
+	while (index < 1000) {
+		if (localStorage.getItem(index) !== null) {
+			//we don't want to display hidden system files (swapped out processes)
+			//filename starting with "." denotes this
+			//if (localStorage.getItem(index).substring(5,6) !== ".") {
+				fileString += localStorage.getItem(index).substring(5) + " ";
+			//}
+		}
+		index += 1;
+	}
+	
+	_StdIn.putTextAbovePrompt(fileString);
 }

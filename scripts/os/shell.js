@@ -36,6 +36,13 @@ function shellInit() {
     sc.function = shellVer;
     this.commandList[this.commandList.length] = sc;
     
+    // ls
+    sc = new ShellCommand();
+    sc.command = "ls";
+    sc.description = "- Lists existing files.";
+    sc.function = shellLs;
+    this.commandList[this.commandList.length] = sc;
+    
     // create
     sc = new ShellCommand();
     sc.command = "create";
@@ -48,6 +55,20 @@ function shellInit() {
     sc.command = "write";
     sc.description = "<filename> \"data\" - Writes the given data into the given file.";
     sc.function = shellWrite;
+    this.commandList[this.commandList.length] = sc;
+    
+    // read
+    sc = new ShellCommand();
+    sc.command = "read";
+    sc.description = "<filename> - Prints the contents of the given file.";
+    sc.function = shellRead;
+    this.commandList[this.commandList.length] = sc;
+    
+    // delete
+    sc = new ShellCommand();
+    sc.command = "delete";
+    sc.description = "<filename> - Deletes the given file.";
+    sc.function = shellDelete;
     this.commandList[this.commandList.length] = sc;
     
     // format
@@ -151,21 +172,21 @@ function shellInit() {
     // quantum <number>
     sc = new ShellCommand();
     sc.command = "quantum";
-    sc.description = "<clock ticks> - Sets the round robin scheduling quantum.";
+    sc.description = "<clock ticks> - Sets the process scheduling quantum.";
     sc.function = shellQuantum;
     this.commandList[this.commandList.length] = sc;
 
     // setschedule <type>
     sc = new ShellCommand();
     sc.command = "setschedule";
-    sc.description = "<type> - Sets the round robin scheduling algorithm.";
+    sc.description = "<type> - Sets the process scheduling algorithm.";
     sc.function = shellSetSchedule;
     this.commandList[this.commandList.length] = sc;
     
     // getschedule
     sc = new ShellCommand();
     sc.command = "getschedule";
-    sc.description = "Displays the current round robin scheduling algorithm.";
+    sc.description = "- Displays the current process scheduling algorithm.";
     sc.function = shellGetSchedule;
     this.commandList[this.commandList.length] = sc;
 
@@ -384,6 +405,10 @@ function shellVer(args)
     _StdIn.putText(APP_NAME + " version " + APP_VERSION);
 }
 
+function shellLs(args) {
+	_KernelInterruptQueue.enqueue(new Interrupt(FILE_FIND_IRQ, []));
+}
+
 function shellFormat(args) {
 	_KernelInterruptQueue.enqueue(new Interrupt(FILE_FORMAT_IRQ, []));
 }
@@ -401,14 +426,36 @@ function shellWrite(args)
 {
 	var data = "";
 	if (args.length > 0) {
-		if (args.length > 1) {
-			data = args[1];
+		var i = 1;
+		while (i < args.length) {
+			data += args[i] + " ";
+			i += 1;
 		}
 		var name = args[0];
 		_KernelInterruptQueue.enqueue(new Interrupt(FILE_WRITE_IRQ, [name, data]));
 	}
 	else {
 		_StdIn.putText("Please supply a filename and data as arguments.");
+	}
+}
+
+function shellRead(args)
+{
+	if (args.length > 0) {
+		_KernelInterruptQueue.enqueue(new Interrupt(FILE_READ_IRQ, [args[0]]));
+	}
+	else {
+		_StdIn.putText("Please supply a filename as an argument.");
+	}
+}
+
+function shellDelete(args)
+{
+	if (args.length > 0) {
+		_KernelInterruptQueue.enqueue(new Interrupt(FILE_REMOVE_IRQ, [args[0]]));
+	}
+	else {
+		_StdIn.putText("Please supply a filename as an argument.");
 	}
 }
 
