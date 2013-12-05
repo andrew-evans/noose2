@@ -42,6 +42,20 @@ function shellInit() {
     sc.description = "<filename> - Creates a new file with a given name.";
     sc.function = shellCreate;
     this.commandList[this.commandList.length] = sc;
+    
+    // write
+    sc = new ShellCommand();
+    sc.command = "write";
+    sc.description = "<filename> \"data\" - Writes the given data into the given file.";
+    sc.function = shellWrite;
+    this.commandList[this.commandList.length] = sc;
+    
+    // format
+    sc = new ShellCommand();
+    sc.command = "format";
+    sc.description = "- Formats the file system drive.";
+    sc.function = shellFormat;
+    this.commandList[this.commandList.length] = sc;
 
 	// load
     sc = new ShellCommand();
@@ -370,12 +384,31 @@ function shellVer(args)
     _StdIn.putText(APP_NAME + " version " + APP_VERSION);
 }
 
+function shellFormat(args) {
+	_KernelInterruptQueue.enqueue(new Interrupt(FILE_FORMAT_IRQ, []));
+}
+
 function shellCreate(args) {
 	if (args.length > 0) {
 		_KernelInterruptQueue.enqueue(new Interrupt(FILE_WRITE_IRQ, [args[0], ""]));
 	}
 	else {
 		_StdIn.putText("Please supply a filename as an argument.");
+	}
+}
+
+function shellWrite(args)
+{
+	var data = "";
+	if (args.length > 0) {
+		if (args.length > 1) {
+			data = args[1];
+		}
+		var name = args[0];
+		_KernelInterruptQueue.enqueue(new Interrupt(FILE_WRITE_IRQ, name, data]));
+	}
+	else {
+		_StdIn.putText("Please supply a filename and data as arguments.");
 	}
 }
 

@@ -43,6 +43,13 @@ function shellInit() {
     sc.function = shellCreate;
     this.commandList[this.commandList.length] = sc;
     
+    // write
+    sc = new ShellCommand();
+    sc.command = "write";
+    sc.description = "<filename> \"data\" - Writes the given data into the given file.";
+    sc.function = shellWrite;
+    this.commandList[this.commandList.length] = sc;
+    
     // format
     sc = new ShellCommand();
     sc.command = "format";
@@ -387,6 +394,21 @@ function shellCreate(args) {
 	}
 	else {
 		_StdIn.putText("Please supply a filename as an argument.");
+	}
+}
+
+function shellWrite(args)
+{
+	var data = "";
+	if (args.length > 0) {
+		if (args.length > 1) {
+			data = args[1];
+		}
+		var name = args[0];
+		_KernelInterruptQueue.enqueue(new Interrupt(FILE_WRITE_IRQ, [name, data]));
+	}
+	else {
+		_StdIn.putText("Please supply a filename and data as arguments.");
 	}
 }
 

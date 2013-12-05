@@ -31,27 +31,36 @@ function krnFileSysReadFile(params) {
 
 function krnFileSysWriteFile(params) {
 	var name = params[0];
-	var data = params[1];
+	var data = "";
+	if (params.length > 1) {
+		data = params[1];
+	}
 	
 	var index = fileIndex(name);
+	//_StdIn.putTextAbovePrompt("" + index);
 	
 	if (index != -1) {	//file exists, overwrite it
-	
+		
 	}
 	else {	//file does not exist, create it
 		if (nameIsValid(name)) {
-			var next = getNextIndex();
-			var location = 100;
-			if (next - 1 >= 0) {
-				location = parseInt(localStorage.getItem("" + (next - 1)).substring(0,3)) + 1;
-			}
-			localStorage.setItem("" + next, "" + location + "." + name);
+			index = getNextIndex();
+			//data = "";
+			
+			/*if (index - 1 >= 0) {
+				location = parseInt(localStorage.getItem("" + (index - 1)).substring(0,3)) + 1;
+			}*/
 		}
 		else {
 			_StdIn.putTextAbovePrompt("File names must contain only alphanumeric");
 			_StdIn.putTextAbovePrompt("characters and have 8 or less characters.");
+			return;
 		}
 	}
+	
+	var location = index + 1000;
+	localStorage.setItem(index, "" + location + "." + name);
+	localStorage.setItem(location, "" + data);
 }
 
 function krnFileSysFormat(params) {
@@ -70,11 +79,9 @@ function nameIsValid(name) {
 
 function getNextIndex() {
 	var index = 0;
-	var s = "" + index;
 	
-	while (localStorage.getItem(s) !== null) {
+	while (localStorage.getItem(index) !== null) {
 		index += 1;
-		s = "" + index;
 	}
 	
 	return index;
@@ -84,14 +91,13 @@ function fileIndex(name) {
 	var index = 0;
 	var s = "" + index;
 	
-	while (localStorage.getItem(s) !== name) {
+	while (localStorage.getItem(index) !== null) {
+		if (localStorage.getItem(index).substring(5) === name) {
+			return index;
+		}
 		index += 1;
 		s = "" + index;
-		
-		if (localStorage.getItem(s) === null) {
-			return -1;
-		}
 	}
 	
-	return index;
+	return -1;
 }
