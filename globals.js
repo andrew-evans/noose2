@@ -27,6 +27,7 @@ var FILE_READ_IRQ = 4;
 var FILE_FORMAT_IRQ = 5;
 var FILE_REMOVE_IRQ = 6;
 var FILE_FIND_IRQ = 7;
+var FILE_SWAP_IRQ = 8;
 //var PROCESS_READY_IRQ = 3;
 
 

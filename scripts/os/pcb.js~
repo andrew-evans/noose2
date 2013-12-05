@@ -12,6 +12,7 @@ function PCB() {
 	this.location = -1;
 	this.locationEnd = -1;
 	this.len = -1;
+	this.priority = -1;
 
 	this.partition = -1;
 	
@@ -28,12 +29,14 @@ function PCB() {
 
 	this.resetCPU();
 
-	this.init = function(pid, location, len, partition) {
+	this.init = function(pid, location, len, partition, priority) {
 		this.pid = pid;
 		this.location = location;
 		this.len = len;
 		this.locationEnd = location + len - 1;
 		this.partition = partition;
+		this.PC = partition * _MemoryManager.partitionSize;
+		this.priority = priority;
 	};
 
 	this.saveCPU = function() {

@@ -51,7 +51,10 @@ function MemoryManager() {
 			}
 		}
 		else {
-			return null;
+			pcb.init(this.pid++, 0, opCodes.length, 0, priority);
+			pcb.fileLocation = krnFileSysAddProcess(programString, pcb.pid);
+			this.processes.push(pcb);
+			return pcb;
 		}
 				
 		var location = this.partitionSize * part;
@@ -134,6 +137,11 @@ function MemoryManager() {
 		}*/
 		return _Memory.mem[location];
 	};
+	
+	this.superRead = function(location) {
+		location = modulo(location, this.memoryLimit);
+		return _Memory.mem[location];
+	};
 
 	this.writeValue = function(value, location) {
 		location = modulo(location, this.partitionSize) + _CPU.base;
@@ -148,7 +156,7 @@ function MemoryManager() {
 		return _Memory.load(value, location);
 	};
 	
-	//returns the number of available partitions;
+	//returns the number of filled partitions;
 	this.partitionsFilled = function() {
 		var filled = 0;
 		for (var i = 0; i < this.partitions; i += 1) {
@@ -157,6 +165,17 @@ function MemoryManager() {
 		
 		return filled;
 	};
+	
+	this.nextOpenPartition = function() {
+		var index = 0;
+		for (index = 0; index < this.partitions; index += 1) {
+			if (this.partitionStates[index] === 0) {
+				return index;
+			}
+		}
+		
+		return -1;
+	}
 	
 	this.clearPartition = function(part) {
 		if (part < this.partitions) {

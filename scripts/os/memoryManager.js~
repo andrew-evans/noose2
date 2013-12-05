@@ -28,7 +28,7 @@ function MemoryManager() {
 		}
 	};
 
-	this.loadProgram = function(programString) {
+	this.loadProgram = function(programString, priority) {
 		var opCodes = programString.split(/\s+/);
 		var i = 0;
 		
@@ -51,7 +51,10 @@ function MemoryManager() {
 			}
 		}
 		else {
-			return null;
+			pcb.init(this.pid++, 0, opCodes.length, 0, priority);
+			pcb.fileLocation = krnFileSysAddProcess(programString, pcb.pid);
+			this.processes.push(pcb);
+			return pcb;
 		}
 				
 		var location = this.partitionSize * part;
@@ -64,7 +67,7 @@ function MemoryManager() {
 
 		//create a new PCB and pass in the necessary values
 		
-		pcb.init(this.pid, location, opCodes.length, part);
+		pcb.init(this.pid, location, opCodes.length, part, priority);
 		this.processes.push(pcb);
 		this.pid++;
 		
@@ -75,9 +78,11 @@ function MemoryManager() {
 
 	this.endProcess = function(pid) {
 		var pcb = this.getProcess(pid);
-		pcb.state = "TERMINATED";
-		this.clearPartition(pcb.partition);
-		this.removeProcess(pid);
+		if (pcb !== null) {
+			pcb.state = "TERMINATED";
+			this.clearPartition(pcb.partition);
+			this.removeProcess(pid);
+		}
 	};
 
 	this.getProcess = function(pid) {
@@ -89,6 +94,16 @@ function MemoryManager() {
 		
 		return null;
 	};
+	
+	this.runningProcess = function(pid) {
+		for (var i = 0; i < this.readyQueue.length; i++) {
+			if (this.readyQueue[i].pid == pid) {
+				return true;
+			}
+		}
+		
+		return false;
+	}
 
 	this.removeProcess = function(pid) {
 		var pcb = this.getProcess(pid);
@@ -122,6 +137,11 @@ function MemoryManager() {
 		}*/
 		return _Memory.mem[location];
 	};
+	
+	this.superRead = function(location) {
+		location = modulo(location, this.memoryLimit);
+		return _Memory.mem[location];
+	};
 
 	this.writeValue = function(value, location) {
 		location = modulo(location, this.partitionSize) + _CPU.base;
@@ -136,7 +156,7 @@ function MemoryManager() {
 		return _Memory.load(value, location);
 	};
 	
-	//returns the number of available partitions;
+	//returns the number of filled partitions;
 	this.partitionsFilled = function() {
 		var filled = 0;
 		for (var i = 0; i < this.partitions; i += 1) {
@@ -146,10 +166,22 @@ function MemoryManager() {
 		return filled;
 	};
 	
+	this.nextOpenPartition = function() {
+		var index = 0;
+		for (index = 0; index < this.partitions; index += 1) {
+			if (this.partitionStates[index] === 0) {
+				return index;
+			}
+		}
+		
+		return -1;
+	}
+	
 	this.clearPartition = function(part) {
 		if (part < this.partitions) {
 			_Memory.clearMemory(this.partitionStart(part), this.partitionEnd(part));
 			this.partitionStates[part] = 0;
+			krnTrace("gggggggggggggggggggggggggggggggggggg");
 		}
 	};
 	

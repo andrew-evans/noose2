@@ -15,6 +15,7 @@ function PCB() {
 	this.priority = -1;
 
 	this.partition = -1;
+	this.fileLocation = -1;
 	
 	this.state = "NEW";
 	//NEW, RUNNING, WAITING, READY, TERMINATED 

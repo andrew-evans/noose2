@@ -8,6 +8,7 @@ function DeviceDriverFileSystem() {
 	this.remove = krnFileSysDelete;
 	this.format = krnFileSysFormat;
 	this.find = krnFileSysFind;
+	this.swap = krnFileSysSwap;
     //this.isr = krnKbdDispatchKeyPress;
 }
 
@@ -15,6 +16,109 @@ function krnFileSysDriverEntry()
 {
     this.status = "loaded";
 }
+
+function krnFileSysAddProcess(program, pid) {
+	var index = pid;//getNextSwapIndex();
+	sessionStorage.setItem(index, program);
+	return index;
+}
+
+function krnFileSysSwap(params) {
+	var pcb1 = params[0]; //on drive
+	var pcb2 = params[1]; //in memory
+	
+	var i = pcb2.location;
+	var programString = "";
+	while (i < pcb2.locationEnd) {
+		programString += _MemoryManager.superRead(i++).toString(16) + " ";
+	}
+	programString = programString.trim();
+	
+	var index = pcb2.pid;
+	sessionStorage.setItem(index,programString);
+	pcb2.fileLocation = index;
+	
+	//var temp = pcb1.partition;
+	pcb1.partition = pcb2.partition;
+	//pcb2.partition = temp;
+	//this is bad, I know.
+	//but at this point I'd rather do it this way than change the way the PC is stored and have to test it all again.
+	//var newPC = pcb1.partition * _MemoryManager.partitionSize + modulo(pcb1.PC, _MemoryManager.partitionSize);
+	//pcb1.PC = modulo(pcb1.PC, _MemoryManager.partitionSize);
+	//newPC = pcb2.partition * _MemoryManager.partitionSize + modulo(pcb2.PC, _MemoryManager.partitionSize);
+	//pcb2.PC = newPC;
+	
+	programString = sessionStorage.getItem(pcb1.fileLocation);
+	var opCodes = programString.split(/\s+/);
+	var currentLocation = _MemoryManager.partitionStart(pcb1.partition);
+	
+	i = 0;
+	
+	while (i < opCodes.length) {
+		_MemoryManager.superWrite(parseInt(opCodes[i++],16), currentLocation);
+		currentLocation += 1;
+	}
+	
+	//sessionStorage.removeItem(pcb1.fileLocation);
+	pcb1.fileLocation = -1;
+	
+	//pcb1.state = "RUNNING";
+	pcb2.state = "READY";
+}
+
+function krnFileSysSwapOut(pcb) {
+	var i = _MemoryManager.partitionStart(pcb.partition);
+	var programString = "";
+	while (i < _MemoryManager.partitionEnd(pcb.partition)) {
+		programString += _MemoryManager.superRead(i++).toString(16) + " ";
+	}
+	programString = programString.trim();
+	
+	var index = pcb.pid;
+	sessionStorage.setItem(index,programString);
+	pcb.fileLocation = index;
+	
+	_MemoryManager.clearPartition(pcb.partition);
+	pcb.partition = -1;
+}
+
+function krnFileSysSwapIn(pcb) {
+	//alert(_MemoryManager.partitionStates);
+	var part = _MemoryManager.nextOpenPartition();
+	if (part != -1 && pcb.fileLocation != -1) {
+		pcb.partition = part;
+		
+		programString = sessionStorage.getItem(pcb.fileLocation);
+		//krnTrace("fffffffffffffffffffffff" + programString);
+		var opCodes = programString.split(/\s+/);
+		var currentLocation = _MemoryManager.partitionStart(part);
+		var i = 0;
+		
+		while (i < opCodes.length) {
+			_MemoryManager.superWrite(parseInt(opCodes[i++],16), currentLocation);
+			currentLocation += 1;
+		}
+		
+		pcb.PC = (pcb.PC % _MemoryManager.partitionSize) + (part * _MemoryManager.partitionSize);
+		
+		_MemoryManager.partitionStates[part] = 1;
+	}
+}
+
+/*function getNextSwapIndex() {
+	var index = 2000;
+	
+	while (sessionStorage.getItem(index) !== null) {
+		index += 1;
+	}
+	
+	if (index >= 2100) {
+		//ideally, we should do something more here.
+		return -1;
+	}
+	
+	return index;
+}*/
 
 function krnFileSysReadFile(params) {
 	var name = params[0];
@@ -39,7 +143,7 @@ function krnFileSysWriteFile(params) {
 	
 	var index = fileIndex(name);
 	
-	if (index != -1) {	//file exists, overwrite it
+	if (index != -1) {	//file exists, overwrite it (below)
 		
 	}
 	else {	//file does not exist, create it
